@@ -1,17 +1,17 @@
 Four years ago, I created a simple console blackjack game in Python. I was very proud of it and thought of it as my greatest programmatic creation for years. In hindsight, the application was under-engineered and crude.
-Furthermore, it has a few minor - but very noticeable - bugs.  In this project, I sought to demonstrate my growth as a developer after two semesters in college by creating a blackbox blackjack engine in C#. I have 
-tested it quite thoroughly with a crude CLI application and have reached a point of stability (in that the engine and CLI application are running smoothly under pressure with few to no bugs) after many long hours. 
-I intend to create a GUI application to utilize the library in the near future. 
+It also had some tendencies similar to those of spaghetti code. Furthermore, it has a few minor - but very noticeable - bugs.  In this project, I sought to demonstrate my growth as a developer after two semesters in 
+college by creating a blackbox blackjack engine in C#. I have tested it quite thoroughly with a crude CLI application and have reached a point of stability (in that the engine and CLI application are running smoothly 
+under pressure with few to no bugs) after many long hours. I intend to create a GUI application to utilize the library in the near future. 
 
 Lots of my struggles in this project so far have arisen out of methods that try to behave dynamically depending on the game's state and methods that have side effects. This lead to confusion when I was debugging. I am
-now starting to understand that the concept of the separation of concerns is so important not only for classes and class behaviors, but for entire libraries and applications that combine to form complex systems. Even
+now starting to understand that the concept of the separation of concerns is so important, not only for classes and class behaviors, but for entire libraries and applications that combine to form complex systems. Even
 source code files in libraries should be grouped together in a reasonable way via folders. Furthermore, this project would have been easier if I had decided to make a whitebox library. This would make more sense, 
 considering the fact that blackjack has been programmed countless times before, reputable online blackjack engines already exist and are used by casinos (making my project worthless to any potential customer of mine), 
 and I have no competitors watching me trying to reverse-engineer my intermediate-level C# project. Never hurts to challenge oneself though, right?  
 
 Currently, my codebase works but needs to be cleaned up and refactored before I commence the GUI application. I learned from my last college C# project that building the frontend and the backend at the same time is not
 a good idea because it complicates debugging and wastes time. It would not be unwise of me to begin the GUI application now because I am 95% sure my library suffers from no bugs, but I might as well fix it up before
-moving forward. Here is my revision plan: 
+moving forward. Here is my refactoring plan: 
 
 - Add Dealer.DrawCard() that calls Deck.DrawCard() to return a Card (so as to mimic real-life Blackjack in accordance with the purpose of OOP). 
 - Remove any unecessary constants from HandStatus (I will definitley be removing HandStatus.Busted, for the computed property Hand.IsBusted works better). 

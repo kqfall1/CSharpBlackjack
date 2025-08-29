@@ -16,3 +16,4 @@ D:\Backup\Career\Coding\COMP123-002\QuinnKeenan_301504914_Blackjack\BlackjackApp
 D:\Backup\Career\Coding\COMP123-002\QuinnKeenan_301504914_Blackjack\BlackjackApp\obj\Debug\net8.0\BlackjackApp.pdb
 D:\Backup\Career\Coding\COMP123-002\QuinnKeenan_301504914_Blackjack\BlackjackApp\obj\Debug\net8.0\BlackjackApp.genruntimeconfig.cache
 D:\Backup\Career\Coding\COMP123-002\QuinnKeenan_301504914_Blackjack\BlackjackApp\obj\Debug\net8.0\ref\BlackjackApp.dll
+D:\Backup\Career\Coding\COMP123-002\QuinnKeenan_301504914_Blackjack\BlackjackApp\obj\Debug\net8.0\BlackjackApp.sourcelink.json

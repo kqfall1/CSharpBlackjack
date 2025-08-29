@@ -10,6 +10,8 @@ namespace BlackjackLib
 {
     public class Dealer : BlackjackEntity
     {
+        private readonly Deck Deck;
+
         internal bool MustHit
         {
             get
@@ -18,9 +20,25 @@ namespace BlackjackLib
             }
         }
 
-        internal Dealer() : base()
+        internal Dealer(Deck deck) : base()
         {
+            Deck = deck;
             MainHand = new DealerHand(this);
+        }
+
+        internal Card DealCard()
+        {
+            return Deck.DrawCard(); 
+        }
+
+        internal void Shuffle()
+        {
+            Deck.Randomize(); 
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()}{Deck}"; 
         }
     }
 }

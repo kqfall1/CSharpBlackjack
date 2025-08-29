@@ -22,7 +22,7 @@ namespace BlackjackLib
         {
             cards = new List<Card>();
             randomGenerator = new Random();
-            Shuffle(); 
+            Randomize(); 
         }
 
         internal Card DrawCard()
@@ -40,7 +40,7 @@ namespace BlackjackLib
         public IEnumerator<Card> GetEnumerator() => cards.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        internal void Shuffle()
+        internal void Randomize()
         {
             Card cardToSwap; 
             byte count; 

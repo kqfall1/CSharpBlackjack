@@ -40,8 +40,6 @@ namespace BlackjackLib
             }
         }
 
-        internal readonly Deck Deck;
-
         internal bool EntityHasBlackJack
         {
             get
@@ -135,9 +133,8 @@ namespace BlackjackLib
 
         internal Game()
         {
-            Dealer = new Dealer();
+            Dealer = new Dealer(new Deck());
             Dealer.MainHand = new DealerHand(Dealer);
-            Deck = new Deck();
             insurancePot = new Pot(); 
             Player = new Player();
             Player.MainHand = new PlayerHand(null, HandType.Dealt, Player);
@@ -210,7 +207,7 @@ namespace BlackjackLib
             Hit(Player.MainHand);
             Hit(dealerHand);
             Hit(Player.MainHand);
-            dealerHand.DownCard = Deck.DrawCard();
+            dealerHand.DownCard = Dealer.DealCard();
 
             ActivePlayerHand = Player.MainHand as PlayerHand;
             Dealer.MainHand = dealerHand;
@@ -232,7 +229,7 @@ namespace BlackjackLib
 
             while (Dealer.MustHit)
             {
-                dealerPlayStr = $"{dealerPlayStr}The dealer draws the {Dealer.MainHand.Hit(Deck.DrawCard())}. ";
+                dealerPlayStr = $"{dealerPlayStr}The dealer draws the {Dealer.MainHand.Hit(Dealer.DealCard())}.";
 
                 if (Dealer.MainHand.IsBusted)
                 {
@@ -264,11 +261,11 @@ namespace BlackjackLib
 
             if (hand is DealerHand dealerMainHand)
             {
-                hitStr = $"{BlackjackEntityToClassName(dealerMainHand.Dealer)} draws the {dealerMainHand.Hit(Deck.DrawCard())}.";
+                hitStr = $"{BlackjackEntityToClassName(dealerMainHand.Dealer)} draws the {dealerMainHand.Hit(Dealer.DealCard())}.";
             }
             else if (hand is PlayerHand playerMainHand) 
             {
-                hitStr = $"{BlackjackEntityToClassName(playerMainHand.Player)} draws the {playerMainHand.Hit(Deck.DrawCard())}. Score: {playerMainHand.Score}.";
+                hitStr = $"{BlackjackEntityToClassName(playerMainHand.Player)} draws the {playerMainHand.Hit(Dealer.DealCard())}. Score: {playerMainHand.Score}.";
             }
             else
             {
@@ -322,8 +319,8 @@ namespace BlackjackLib
             Player.MainHand = new PlayerHand(null, HandType.Dealt, Player);
             Player.SplitHand = new PlayerHand(null, HandType.SplitOnce, Player); 
             Player.InsuranceBet = null;
-            Player.InsuranceBetWon = false; 
-            Deck.Shuffle();
+            Player.InsuranceBetWon = false;
+            Dealer.Shuffle(); 
         }
 
         decimal PayoutPlayerHandBet(PayoutRatio payoutRatio, PlayerHand playerHand)
@@ -343,7 +340,7 @@ namespace BlackjackLib
             }
             else if (playerHand.Status is HandStatus.Blackjack)
             {
-                return $"{showdownString} you were dealt a blackjack. You win {PayoutPlayerHandBet(PayoutRatio.MAIN_BET_BLACKJACK, playerHand):C} from your bet of {playerHand.Bet.ChipAmount:C}."; 
+                return $"{showdownString} you were dealt a blackjack. You are victorious and receive {PayoutPlayerHandBet(PayoutRatio.MAIN_BET_BLACKJACK, playerHand):C} from your bet of {playerHand.Bet.ChipAmount:C}."; 
             }
             else if (Dealer.MainHand.Status is HandStatus.Blackjack)
             {
@@ -366,7 +363,7 @@ namespace BlackjackLib
             }
             else if (Dealer.MainHand.IsBusted)
             {
-                return $"{showdownString} the dealer busts with a score of {Dealer.MainHand.Score}. You win {PayoutPlayerHandBet(PayoutRatio.MAIN_BET, playerHand):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} the dealer busts with a score of {Dealer.MainHand.Score}. You are victorious and receive {PayoutPlayerHandBet(PayoutRatio.MAIN_BET, playerHand):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
             }
             else
             {
@@ -426,7 +423,7 @@ namespace BlackjackLib
 
         public override string ToString()
         {
-            return $"Dealer: {Dealer}Deck: {Deck}\n\nPlayer: {Player}";
+            return $"Dealer: {Dealer}\n\nPlayer: {Player}";
         }
     }
 }
