@@ -40,7 +40,7 @@ namespace BlackjackLib
             }
         }
 
-        internal readonly HandType HandType;
+        public readonly HandType HandType;
 
         internal bool IsValid
         {

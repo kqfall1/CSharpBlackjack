@@ -40,26 +40,6 @@ namespace BlackjackLib
             }
         }
 
-        internal bool EntityHasBlackJack
-        {
-            get
-            {
-                if (Dealer.MainHand is null || ActivePlayerHand is null)
-                {
-                    return false;
-                }
-                
-                return Dealer.MainHand.IsBlackjack || ActivePlayerHand.IsBlackjack;
-            }
-        }
-        internal bool EntityIsBusted
-        {
-            get
-            {
-                return Dealer.MainHand.IsBusted || ActivePlayerHand.IsBusted;
-            }
-        }
-
         internal const int INITIAL_CHIP_AMOUNT = 5000;
         internal const byte MAXIMUM_SPLIT_LEVEL = 1; 
 

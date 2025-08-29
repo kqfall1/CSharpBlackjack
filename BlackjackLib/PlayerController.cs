@@ -136,14 +136,6 @@ namespace BlackjackLib
             }
         }
         
-        public static bool GetEntityHasBlackJack()
-        { 
-            return game.EntityHasBlackJack; 
-        }
-        public static bool GetEntityIsBusted()
-        {
-            return game.EntityIsBusted;
-        }
         public static PlayerHand GetActivePlayerHand()
         {
             return game.ActivePlayerHand;
@@ -156,17 +148,9 @@ namespace BlackjackLib
         {
             return game.Dealer;
         }
-        public static bool GetDealerHasPlayed()
-        {
-            return game.DealerHasPlayed; 
-        }
         public static DealerHand GetDealerMainHand()
         {
             return game.Dealer.MainHand as DealerHand;
-        }
-        public static bool GetDealerMainHandIsBlackjack()
-        {
-            return GetDealerMainHand().IsBlackjack; 
         }
         public static bool GetGameIsActive()
         {
@@ -175,10 +159,6 @@ namespace BlackjackLib
         public static bool GetInsuranceBetPossible()
         {
             return game.InsuranceBetPossible;
-        }
-        public static bool GetInsuranceBetWon()
-        {
-            return game.InsuranceBetWon;
         }
         public static Player GetPlayer()
         {
@@ -194,10 +174,6 @@ namespace BlackjackLib
             }
 
             return playerHands;
-        }
-        public static Bet GetPlayerInsuranceBet()
-        {
-            return GetPlayer().InsuranceBet; 
         }
         public static bool GetPlayerIsPlaying()
         {

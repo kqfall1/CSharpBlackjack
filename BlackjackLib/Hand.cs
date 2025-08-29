@@ -51,7 +51,7 @@ namespace BlackjackLib
             }
         }
 
-        internal virtual bool IsBlackjack
+        public virtual bool IsBlackjack
         {
             get
             {
@@ -64,7 +64,7 @@ namespace BlackjackLib
             }
         }
 
-        internal virtual bool IsBusted
+        public virtual bool IsBusted
         {
             get
             {

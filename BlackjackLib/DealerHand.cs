@@ -51,7 +51,7 @@ namespace BlackjackLib
             }
         }
 
-        internal override bool IsBlackjack
+        public override bool IsBlackjack
         {
             get
             {
@@ -74,7 +74,7 @@ namespace BlackjackLib
             }
         }
 
-        internal override bool IsBusted
+        public override bool IsBusted
         {
             get
             {

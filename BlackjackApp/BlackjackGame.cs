@@ -19,6 +19,31 @@ namespace BlackjackApp
             return $"You have {PlayerController.GetPlayer().ChipAmount:C} in chips. The dealer has {PlayerController.GetDealer().ChipAmount:C} in chips.";
         }
 
+        static string FormatUserInputPrompt()
+        {
+            string handTypeStr = "";
+            string inputPromptStr; 
+
+            switch (PlayerController.GetActivePlayerHand().HandType)
+            {
+                case HandType.Dealt:
+                    handTypeStr = "main";
+                    break;
+                case HandType.SplitOnce:
+                    handTypeStr = "split";
+                    break;
+            }
+
+            inputPromptStr = $"You are currently playing your {handTypeStr} hand.";
+
+            if (PlayerController.GetActivePlayerHand().CanSurrender)
+            {
+                return PromptPlayer($"{inputPromptStr} {PLAYER_ACTION_PROMPT_INITIAL}");
+            }
+
+            return PromptPlayer($"{inputPromptStr} {PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING}");
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine(GREETING_PROMPT);
@@ -28,7 +53,7 @@ namespace BlackjackApp
             {
                 PrepareGame();
 
-                if (PlayerController.GetEntityHasBlackJack() || PlayerController.GetInsuranceBetWon())
+                if (PlayerController.GetPlayerMainHand().IsBlackjack || PlayerController.GetDealerMainHand().IsBlackjack)
                 {
                     Showdown();
                     continue; 
@@ -45,72 +70,20 @@ namespace BlackjackApp
 
             while (PlayerController.GetPlayerIsPlaying())
             {
-                if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
-                {
-                    if (PlayerController.GetActivePlayerHand().CanSurrender)
-                    {
-                        inputStr = PromptPlayer($"You are currently playing your main hand. {PLAYER_ACTION_PROMPT_INITIAL}");
-                    }
-                    else
-                    {
-                        inputStr = PromptPlayer($"You are currently playing your main hand. {PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING}");
-                    }
-                }
-                else
-                {
-                    if (PlayerController.GetActivePlayerHand().CanSurrender)
-                    {
-                        inputStr = PromptPlayer($"You are currently playing your split hand. {PLAYER_ACTION_PROMPT_INITIAL}");
-                    }
-                    else
-                    {
-                        inputStr = PromptPlayer($"You are currently playing your split hand. {PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING}");
-                    }
-                }
+                inputStr = FormatUserInputPrompt(); 
 
                 Console.WriteLine(PlayerController.ExecutePlayerAction(inputStr));
                 
-                if (PlayerController.GetEntityHasBlackJack()) 
+                if (PlayerController.GetActivePlayerHand().HandType is HandType.Dealt && 
+                   (PlayerController.GetActivePlayerHand().IsBlackjack ||
+                   PlayerController.GetActivePlayerHand().IsBusted) ||
+                   PlayerController.GetActivePlayerHand().Status is HandStatus.Standing ||
+                   PlayerController.GetActivePlayerHand().Status is HandStatus.Surrendered)
                 {
-                    if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
-                    { //COMBINE THESE CONDITIONALS
-                        break;
-                    }
-
-                    PlayerController.AlterActivePlayerHand();
-                }
-                
-                if (PlayerController.GetEntityIsBusted())
-                {
-                    if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
-                    {
-                        break;
-                    }
-
-                    PlayerController.AlterActivePlayerHand();
+                    break; 
                 }
 
-                if (PlayerController.GetActivePlayerHand().Status is HandStatus.Standing)
-                {
-                    if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
-                    {
-                        break;
-                    }
-
-                    PlayerController.AlterActivePlayerHand();
-                }
-
-                if (PlayerController.GetActivePlayerHand().Status is HandStatus.Surrendered)
-                {
-                    if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
-                    {
-                        break;
-                    }
-
-                    PlayerController.AlterActivePlayerHand();
-                    continue; 
-                }
-
+                PlayerController.AlterActivePlayerHand();
                 Console.WriteLine(); 
             }
         }
@@ -202,17 +175,17 @@ namespace BlackjackApp
             {
                 PlayerController.SetActivePlayerHand(playerHands[count]);
 
-                if (PlayerController.GetEntityHasBlackJack())
+                if (PlayerController.GetActivePlayerHand().IsBlackjack || PlayerController.GetDealerMainHand().IsBlackjack)
                 {
                     Console.WriteLine(PlayerController.ShowdownBlackjack(playerHands[count]));
+                }
+                else if (PlayerController.GetActivePlayerHand().IsBusted || PlayerController.GetDealerMainHand().IsBusted)
+                {
+                    Console.WriteLine(PlayerController.ShowdownBusted(playerHands[count]));
                 }
                 else if (PlayerController.GetActivePlayerHand().Status is HandStatus.Surrendered)
                 {
                     Console.WriteLine(PlayerController.ShowdownSurrendered(playerHands[count])); 
-                }
-                else if (PlayerController.GetEntityIsBusted())
-                {
-                    Console.WriteLine(PlayerController.ShowdownBusted(playerHands[count]));
                 }
                 else
                 {
