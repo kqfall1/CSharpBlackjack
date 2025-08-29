@@ -28,7 +28,7 @@ namespace BlackjackApp
             {
                 PrepareGame();
 
-                if (PlayerController.GetEntityHasBlackJack() || PlayerController.GetPlayerInsuranceBetWon())
+                if (PlayerController.GetEntityHasBlackJack() || PlayerController.GetInsuranceBetWon())
                 {
                     Showdown();
                     continue; 

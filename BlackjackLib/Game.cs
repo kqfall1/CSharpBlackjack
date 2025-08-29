@@ -77,6 +77,14 @@ namespace BlackjackLib
             }
         }
 
+        internal bool InsuranceBetWon
+        {
+            get
+            {
+                return Dealer.MainHand.IsBlackjack && Player.InsuranceBet is not null; 
+            }
+        }
+
         private Pot insurancePot;
         internal Pot InsurancePot
         {
@@ -163,7 +171,6 @@ namespace BlackjackLib
 
             if (Dealer.MainHand.Status is HandStatus.Blackjack)
             {
-                Player.InsuranceBetWon = true; 
                 insuranceBetWinnings = Player.InsuranceBet.Payout(Dealer, PayoutRatio.INSURANCE_BET);
                 Player.AddChips(insuranceBetWinnings);
                 return $"You win {insuranceBetWinnings:C} on your insurance bet of {insuranceBetChipAmount:C}";
@@ -316,7 +323,6 @@ namespace BlackjackLib
             Player.MainHand = new PlayerHand(null, HandType.Dealt, Player);
             Player.SplitHand = new PlayerHand(null, HandType.SplitOnce, Player); 
             Player.InsuranceBet = null;
-            Player.InsuranceBetWon = false;
             Dealer.Shuffle(); 
         }
 

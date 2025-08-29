@@ -176,6 +176,10 @@ namespace BlackjackLib
         {
             return game.InsuranceBetPossible;
         }
+        public static bool GetInsuranceBetWon()
+        {
+            return game.InsuranceBetWon;
+        }
         public static Player GetPlayer()
         {
             return game.Player;
@@ -194,10 +198,6 @@ namespace BlackjackLib
         public static Bet GetPlayerInsuranceBet()
         {
             return GetPlayer().InsuranceBet; 
-        }
-        public static bool GetPlayerInsuranceBetWon()
-        {
-            return GetPlayer().InsuranceBetWon; 
         }
         public static bool GetPlayerIsPlaying()
         {

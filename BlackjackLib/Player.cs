@@ -32,19 +32,6 @@ namespace BlackjackLib
             }
         }
 
-        private bool insuranceBetWon; 
-        internal bool InsuranceBetWon
-        {
-            get
-            {
-                return insuranceBetWon;
-            }
-            set
-            {
-                insuranceBetWon = value; 
-            }
-        }
-
         private PlayerHand splitHand; 
         public PlayerHand SplitHand
         {
