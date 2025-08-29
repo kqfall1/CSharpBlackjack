@@ -10,8 +10,9 @@ namespace BlackjackApp
         const string INVALID_INPUT_NOTIFICATION = $"\nPlease enter a valid input.";
         const string GREETING_PROMPT = "Welcome to Blackjack!";
         const string PLACE_BET_PROMPT = "Place a bet";
-        static string placeInsuranceBetPrompt;
-        const string PLAYER_ACTION_PROMPT = "Would you like to (H)it, (St)and, (D)ouble down, or (Sp)lit?";
+        static string PLACE_INSURANCE_BET_PROMPT;
+        const string PLAYER_ACTION_PROMPT_INITIAL = "Would you like to (d)ouble down, (h)it, (sp)lit, (st)and, or (su)rrender?";
+        const string PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING = "Would you like to (d)ouble down, (h)it, (sp)lit, or (st)and?";
 
         static string BriefPlayerAboutChipAmounts()
         {
@@ -46,11 +47,25 @@ namespace BlackjackApp
             {
                 if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
                 {
-                    inputStr = PromptPlayer($"You are currently playing your main hand. {PLAYER_ACTION_PROMPT}"); 
+                    if (PlayerController.GetActivePlayerHand().CanSurrender)
+                    {
+                        inputStr = PromptPlayer($"You are currently playing your main hand. {PLAYER_ACTION_PROMPT_INITIAL}");
+                    }
+                    else
+                    {
+                        inputStr = PromptPlayer($"You are currently playing your main hand. {PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING}");
+                    }
                 }
                 else
                 {
-                    inputStr = PromptPlayer($"You are currently playing your split hand. {PLAYER_ACTION_PROMPT}");
+                    if (PlayerController.GetActivePlayerHand().CanSurrender)
+                    {
+                        inputStr = PromptPlayer($"You are currently playing your split hand. {PLAYER_ACTION_PROMPT_INITIAL}");
+                    }
+                    else
+                    {
+                        inputStr = PromptPlayer($"You are currently playing your split hand. {PLAYER_ACTION_PROMPT_WITHOUT_SURRENDERING}");
+                    }
                 }
 
                 Console.WriteLine(PlayerController.ExecutePlayerAction(inputStr));
@@ -85,6 +100,17 @@ namespace BlackjackApp
                     PlayerController.AlterActivePlayerHand();
                 }
 
+                if (PlayerController.GetActivePlayerHand().Status is HandStatus.Surrendered)
+                {
+                    if (PlayerController.GetActivePlayerHandType() is HandType.Dealt)
+                    {
+                        break;
+                    }
+
+                    PlayerController.AlterActivePlayerHand();
+                    continue; 
+                }
+
                 Console.WriteLine(); 
             }
         }
@@ -105,8 +131,8 @@ namespace BlackjackApp
 
             if (PlayerController.GetInsuranceBetPossible())
             {
-                placeInsuranceBetPrompt = $"\nDo you wish to place an insurance bet of {PlayerController.GetPlayerMainHandBet().ChipAmount / 2:C} (Y/N)?";
-                inputStr = PromptPlayerForYesOrNoAnswer(placeInsuranceBetPrompt);
+                PLACE_INSURANCE_BET_PROMPT = $"\nDo you wish to place an insurance bet of {PlayerController.GetPlayerMainHandBet().ChipAmount / 2:C} (Y/N)?";
+                inputStr = PromptPlayerForYesOrNoAnswer(PLACE_INSURANCE_BET_PROMPT);
 
                 switch (inputStr)
                 {
@@ -180,13 +206,17 @@ namespace BlackjackApp
                 {
                     Console.WriteLine(PlayerController.ShowdownBlackjack(playerHands[count]));
                 }
+                else if (PlayerController.GetActivePlayerHand().Status is HandStatus.Surrendered)
+                {
+                    Console.WriteLine(PlayerController.ShowdownSurrendered(playerHands[count])); 
+                }
                 else if (PlayerController.GetEntityIsBusted())
                 {
-                    Console.WriteLine(PlayerController.ShowdownBusted(playerHands[count])); 
+                    Console.WriteLine(PlayerController.ShowdownBusted(playerHands[count]));
                 }
                 else
                 {
-                    Console.WriteLine(PlayerController.Showdown(playerHands[count]));
+                    Console.WriteLine(PlayerController.ShowdownNormal(playerHands[count]));
                 }
             }
 

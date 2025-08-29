@@ -109,8 +109,8 @@ namespace BlackjackLib
         {
             get
             {
-                return (ActivePlayerHand.Status is HandStatus.Drawing || ActivePlayerHand.Status is HandStatus.WaitingOnSplitHand)
-                       && PlayerController.GetDealerMainHand().Status is HandStatus.WaitingToDraw; 
+                return (ActivePlayerHand.Status is HandStatus.Drawing || ActivePlayerHand.Status is HandStatus.WaitingOnSplitHand) &&
+                       PlayerController.GetDealerMainHand().Status is HandStatus.WaitingToDraw; 
             }
         }
 
@@ -118,7 +118,11 @@ namespace BlackjackLib
         {
             get
             {
-                return !PlayerIsPlaying && !ActivePlayerHand.IsBlackjack && !ActivePlayerHand.IsBusted && Dealer.MainHand.Status == HandStatus.WaitingToDraw;
+                return !PlayerIsPlaying &&
+                       !ActivePlayerHand.IsBlackjack &&
+                       !ActivePlayerHand.IsBusted &&
+                       ActivePlayerHand.Status is not HandStatus.Surrendered &&
+                       Dealer.MainHand.Status == HandStatus.WaitingToDraw;
             }
         }
 
@@ -229,7 +233,7 @@ namespace BlackjackLib
 
             while (Dealer.MustHit)
             {
-                dealerPlayStr = $"{dealerPlayStr}The dealer draws the {Dealer.MainHand.Hit(Dealer.DealCard())}.";
+                dealerPlayStr = $"{dealerPlayStr}The dealer draws the {Dealer.MainHand.Hit(Dealer.DealCard())}. ";
 
                 if (Dealer.MainHand.IsBusted)
                 {
@@ -237,8 +241,7 @@ namespace BlackjackLib
                 }
             }
 
-            Stand(Dealer.MainHand);
-            return $"{dealerPlayStr}The dealer stands on {Dealer.MainHand.Score}."; 
+            return $"{dealerPlayStr}{Stand(Dealer.MainHand)}";
         }
 
         static string DetermineShowdownStringPreamble(PlayerHand playerHand)
@@ -382,6 +385,10 @@ namespace BlackjackLib
                 return $"{showdownString} You have tied the dealer's score and have your bet of {PayoutPlayerHandBet(PayoutRatio.PUSH, playerHand):C} pushed.";
             }
         }
+        internal string ShowdownSurrendered(PlayerHand playerHand)
+        {
+            return $"{DetermineShowdownStringPreamble(playerHand)} You receive {PayoutPlayerHandBet(PayoutRatio.SURRENDER, playerHand):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+        }
 
         internal string Split()
         {
@@ -407,12 +414,31 @@ namespace BlackjackLib
             Player.SplitHand.Status = HandStatus.Drawing;
             ActivePlayerHand = Player.SplitHand;
 
-            return $"Your first hand is now:\n\n\t{Player.MainHand.ToString()}\n\nYour second hand is now:\n\n\t{Player.SplitHand.ToString()}";
+            return $"Your first hand (score: {Player.MainHand.Score}) is now:\n\n\t{Player.MainHand.ToString()}\n\nYour second hand (score: {Player.SplitHand.Score}) is now:\n\n\t{Player.SplitHand.ToString()}";
         }
 
-        internal void Stand(Hand hand)
+        internal string Stand(Hand hand)
         {
             hand.Status = HandStatus.Standing;
+
+            if (hand is DealerHand dealerHand)
+            {
+                return $"{BlackjackEntityToClassName(Dealer)} elects to stand on {hand.Score}.";
+            }
+            else if (hand is PlayerHand playerHand) 
+            {
+                return $"{BlackjackEntityToClassName(Player)} elects to stand on {hand.Score}.";
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unexpected hand type in Game.Stand(): \"{hand.GetType()}\"."); 
+            }
+        }
+
+        internal string Surrender(PlayerHand playerHand)
+        {
+            playerHand.Status = HandStatus.Surrendered;
+            return $"You surrender on a score of {playerHand.Score}.";
         }
 
         public override string ToString()

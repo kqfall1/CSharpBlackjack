@@ -15,20 +15,21 @@ moving forward. Here is my refactoring plan:
 
 - Add Dealer.DrawCard() that calls Deck.DrawCard() to return a Card (so as to mimic real-life Blackjack in accordance with the purpose of OOP). 
 - Remove any unecessary constants from HandStatus (I will definitley be removing HandStatus.Busted, for the computed property Hand.IsBusted works better). 
-- Change any readonly properties into readonly fields. My general philosophy is to make any piece of instance data that is supposed to be immutable into a field and any piece of data that is supposed to be mutable into a 
-property. Many developers at Microsoft may take issue with that, but I am sure that I am not alone in following this convention. I am slightly sacrificing the ease of serialization and the scalability of my project 
-for semantic clarity and readability. I believe that is reasonable considering that I don't plan on ever implementing serialization in any way for this project and have compensated for the scalability loss by my 
-other design choices. 
 - Implement surrendering, an option offered in some blackjack games where the player can "fold" their hand and get paid half of their bet. This will be useful for when I get dealt 15s and 16s!
 - Turn Player.InsuranceBetWon into a computed property that is inferred by the game's state. 
 - I may add null checks to some of my library class members. However, I designed the library with the idea that any input must enter through an interface class inside the library that connects the application to the 
 library (currently PlayerController) and that all input will be validated there. 
 - Put Game.InsuranceBet into the Player class. Look through all other classes and validate whether the members belong (should the Game class have Pots if Bet already encapsulates an immutable Pot??) 
 - I remove or alter Game.GetEntityHasBusted and Game.EntityHasBlackjack.
+- Add more specific exceptions to the necessary try-catch blocks currently in PlayerController and clean up all of the try-catch blocks. 
 - The Game and PlayerController class are bloated and are doing too much work. I will have to plan how to divide the PlayerController logic into multiple classes, because it is doing much more than driving the player's
  interaction with the game. I originally intended it for it to do just that, but I got carried away, no doubt. 
 -Double check all lines of code in the library to verify that they are consistent with each other and proper conventions. 
 - Rename any variables/methods/classes/etc. necessary. 
+- Change any readonly properties into readonly fields. My general philosophy is to make any piece of instance data that is supposed to be immutable into a field and any piece of data that is supposed to be mutable into a 
+property. Many developers at Microsoft may take issue with that, but I am sure that I am not alone in following this convention. I am slightly sacrificing the ease of serialization and the scalability of my project 
+for semantic clarity and readability. I believe that is reasonable considering that I don't plan on ever implementing serialization in any way for this project and have compensated for the scalability loss by my 
+other design choices. 
 - Group all library csharp source into appropriate folders. 
 
 I am excited to demonstrate my ability to maintain a codebase of my own creation! I am looking forward to creating the GUI application as well! I may be reinventing the wheel in a way, but I have a feeling that my efforts

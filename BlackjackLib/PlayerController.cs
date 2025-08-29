@@ -4,7 +4,12 @@ namespace BlackjackLib
 {
     public static class PlayerController
     {
+        static readonly char DOUBLE_DOWN_ABBREVIATION = 'D'; 
         static Game game;
+        static readonly char HIT_ABBREVIATION = 'H'; 
+        static readonly string SPLIT_ABBREVIATION = "SP";
+        static readonly string STAND_ABBREVIATION = "ST";
+        static readonly string SURRENDER_ABBREVIATION = "SU"; 
 
         public static void AlterActivePlayerHand()
         {
@@ -16,7 +21,7 @@ namespace BlackjackLib
         }
 
         public static string CreateGame()
-        {
+        { 
             try
             {
                 if (game is not null)
@@ -69,31 +74,44 @@ namespace BlackjackLib
 
         public static string ExecutePlayerAction(string inputStr)
         {
+            char inputChar; 
             string doubleDownStr; 
             
             try
             {
                 EnsureGameInstanceExists();
 
-                if (inputStr != "D" && inputStr != "H" && inputStr != "SP" && inputStr != "ST")
+                if (inputStr == SPLIT_ABBREVIATION)
+                {
+                    return Split();
+                }
+                else if (inputStr == STAND_ABBREVIATION)
+                {
+                    return game.Stand(GetActivePlayerHand());
+                }
+                else if (inputStr == SURRENDER_ABBREVIATION && GetActivePlayerHand().CanSurrender)
+                {
+                    return game.Surrender(GetActivePlayerHand()); 
+                }
+                else if (inputStr.Length != 1)
                 {
                     throw new InvalidInputException(inputStr);
                 }
 
-                switch (inputStr)
+                inputChar = Convert.ToChar(inputStr); 
+
+                if (inputChar == DOUBLE_DOWN_ABBREVIATION)
                 {
-                    case "D":
-                        doubleDownStr = PlaceDoubleDownBet();
-                        return doubleDownStr; 
-                    case "H":
-                        return Hit(GetActivePlayerHand());
-                    case "SP":
-                        return Split(); 
-                    case "ST":
-                        game.Stand(GetActivePlayerHand()); 
-                        return $"You elect to stand on {GetActivePlayerHand().Score}.";
-                    default:
-                        throw new InvalidOperationException($"Unexpected input string in \"PlayerInterface.PlayerAction\": \"{inputStr}.\"");
+                    doubleDownStr = PlaceDoubleDownBet();
+                    return doubleDownStr;
+                }
+                else if (inputChar == HIT_ABBREVIATION)
+                {
+                    return Hit(GetActivePlayerHand());
+                }
+                else
+                {
+                    throw new InvalidInputException(inputStr);
                 }
             }
             catch (InvalidOperationException ioException)
@@ -111,6 +129,10 @@ namespace BlackjackLib
             catch (InsufficientChipsException icException)
             {
                 return icException.Message;
+            }
+            catch (Exception exception)
+            {
+                return exception.Message; //FIX THIS UP LATER. 
             }
         }
         
@@ -194,12 +216,12 @@ namespace BlackjackLib
             return game.ShouldDealerPlay; 
         }
 
-        public static string Hit(Hand hand)
+        private static string Hit(PlayerHand playerHand)
         {
             try
             {
                 EnsureGameInstanceExists();
-                return game.Hit(hand);
+                return game.Hit(playerHand);
             }
             catch (InvalidOperationException ioException)
             {
@@ -211,7 +233,7 @@ namespace BlackjackLib
             }
         }
 
-        public static string PlaceDoubleDownBet()
+        private static string PlaceDoubleDownBet()
         {
             decimal chipAmount = GetActivePlayerHand().Bet.ChipAmount * 2; 
             string placeDoubleDownBetStr; 
@@ -332,12 +354,16 @@ namespace BlackjackLib
         {
             return game.ShowdownBusted(playerHand);
         }
-        public static string Showdown(PlayerHand playerHand)
+        public static string ShowdownNormal(PlayerHand playerHand)
         {
             return game.ShowdownNormal(playerHand);
         }
+        public static string ShowdownSurrendered(PlayerHand playerHand)
+        {
+            return game.ShowdownSurrendered(playerHand);
+        }
 
-        public static string Split()
+        private static string Split()
         {
             try
             {

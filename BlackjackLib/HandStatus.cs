@@ -13,6 +13,7 @@ namespace BlackjackLib
         Blackjack, 
         Drawing, 
         Standing, 
+        Surrendered,
         WaitingToDraw,
         WaitingOnSplitHand
     }

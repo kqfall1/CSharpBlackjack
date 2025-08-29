@@ -32,6 +32,14 @@ namespace BlackjackLib
             }
         }
 
+        public bool CanSurrender
+        {
+            get
+            {
+                return UpCards.Count == 2; 
+            }
+        }
+
         internal readonly HandType HandType;
 
         internal bool IsValid
