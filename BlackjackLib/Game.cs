@@ -233,7 +233,6 @@ namespace BlackjackLib
 
                 if (Dealer.MainHand.IsBusted)
                 {
-                    Dealer.MainHand.Status = HandStatus.Busted;
                     return dealerPlayStr;
                 }
             }
@@ -270,11 +269,6 @@ namespace BlackjackLib
             else
             {
                 throw new InvalidOperationException($"Unexpected hand type in Game.Hand(): {hand}.");
-            }
-
-            if (hand.IsBusted)
-            {
-                hand.Status = HandStatus.Busted;
             }
              
             return hitStr; 

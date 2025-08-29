@@ -227,7 +227,7 @@ namespace BlackjackLib
                 
                 placeDoubleDownBetStr = game.PlaceDoubleDownBet();
 
-                if (GetActivePlayerHand().Status is not HandStatus.Busted)
+                if (!GetActivePlayerHand().IsBusted)
                 { 
                     GetActivePlayerHand().Status = HandStatus.Standing;
                 }
