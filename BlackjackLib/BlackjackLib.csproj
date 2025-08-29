@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ojlrhnm4.kxw~" />
+    <None Remove="PlayerInterface.cs~RF15ced80.TMP" />
+  </ItemGroup>
+
+</Project>
