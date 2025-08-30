@@ -130,10 +130,6 @@ namespace BlackjackLib
             {
                 return icException.Message;
             }
-            catch (Exception exception)
-            {
-                return exception.Message; //FIX THIS UP LATER. 
-            }
         }
         
         public static PlayerHand GetActivePlayerHand()
@@ -295,18 +291,25 @@ namespace BlackjackLib
             {
                 return ioException.Message;
             }
-            catch (InsufficientChipsException icException)
+            catch (ArgumentNullException anException)
             {
-                return icException.Message;
+                return anException.Message;
+            }
+            catch (FormatException formatException)
+            {
+                return formatException.Message;
+            }
+            catch (OverflowException overflowException)
+            {
+                return overflowException.Message;
             }
             catch (InvalidInputException iiException)
             {
                 return iiException.Message;
             }
-            catch (Exception exception)
+            catch (InsufficientChipsException icException)
             {
-                //FIX THIS UP LATER WITH SPECIFIC EXCEPTIONS
-                return exception.Message;
+                return icException.Message;
             }
 
             return $"You have placed a bet of {chipAmount:C}.";

@@ -13,7 +13,7 @@ Currently, my codebase works but needs to be cleaned up and refactored before I 
 a good idea because it complicates debugging and wastes time. It would not be unwise of me to begin the GUI application now because I am 95% sure my library suffers from no bugs, but I might as well fix it up before
 moving forward. Here is my refactoring plan: 
 
-- Add Dealer.DrawCard() that calls Deck.DrawCard() to return a Card (so as to mimic real-life Blackjack in accordance with the purpose of OOP). 
+- Add Dealer.DrawCard() that calls Deck.DrawCard() to return a Card (so as to mimic real-life Blackjack in accordance with the purpose of OOP). I also removed Game.Deck and instead had Deck encapsulated by Dealer.
 - Remove any unecessary constants from HandStatus (I will definitley be removing HandStatus.Busted, for the computed property Hand.IsBusted works better). 
 - Implement surrendering, an option offered in some blackjack games where the player can "fold" their hand and get paid half of their bet. This will be useful for when I get dealt 15s and 16s!
 - Turn Player.InsuranceBetWon into a computed property that is inferred by the game's state. 
