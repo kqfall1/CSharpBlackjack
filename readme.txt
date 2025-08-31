@@ -21,7 +21,7 @@ moving forward. Here is my refactoring plan:
 - Add more specific exceptions to the necessary try-catch blocks currently in PlayerController and clean up all of the try-catch blocks. 
 - The Game and PlayerController class are bloated and are doing too much work. I will have to plan how to divide the PlayerController logic into multiple classes, because it is doing much more than driving the player's
  interaction with the game. I originally intended it for it to do just that, but I got carried away, no doubt. 
- - Put Game.InsuranceBet into the Player class. Look through all other classes and validate whether the members belong (should the Game class have Pots if Bet already encapsulates an immutable Pot??) 
+- Look through all other classes and validate whether the members belong (should the Game class have Pots if Bet already encapsulates an immutable Pot??) 
 -Double check all lines of code in the library to verify that they are consistent with each other and proper conventions. 
 - Rename any variables/methods/classes/etc. necessary. 
 - I may add null checks to some of my library class members. However, I designed the library with the idea that any input must enter through an interface class inside the library that connects the application to the 

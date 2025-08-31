@@ -10,7 +10,6 @@ namespace BlackjackLib
 {
     internal class InsufficientChipsException : Exception
     {
-        public InsufficientChipsException(decimal amount, string entityName) : base($"{entityName} doesn't have enough chips to" +
-                                                                                    $" bet {amount:C}.") {}
+        public InsufficientChipsException(BlackjackEntity blackjackEntity, decimal chipAmount) : base(StringInputOutputManager.DetermineInsufficientChipsExceptionMessage(blackjackEntity, chipAmount)) {}
     }
 }

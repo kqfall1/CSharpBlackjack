@@ -60,7 +60,7 @@ namespace BlackjackLib
 
         public override string ToString()
         {
-            return $"{Rank} of {Suit.ToString()}";
+            return $"{Rank.ToString().ToLower()} of {Suit.ToString().ToLower()}";
         }
     }
 }

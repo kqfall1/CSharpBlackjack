@@ -46,6 +46,11 @@ namespace BlackjackLib
             ChipAmount += amount; 
         }
 
+        internal void RemoveChips(decimal chipAmount)
+        {
+            ChipAmount -= chipAmount; 
+        }
+
         public virtual string ToString()
         {
             return $"{GetType().Name}. Chip amount: {ChipAmount}.\n\nMain hand:\n\n{MainHand}\n\n";

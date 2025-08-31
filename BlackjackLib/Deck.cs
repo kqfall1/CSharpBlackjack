@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    internal class Deck : IEnumerable<Card>
+    internal class Deck
     {
         private List<Card> cards;
 
@@ -22,7 +22,7 @@ namespace BlackjackLib
         {
             cards = new List<Card>();
             randomGenerator = new Random();
-            Randomize(); 
+            Shuffle(); 
         }
 
         internal Card DrawCard()
@@ -37,10 +37,7 @@ namespace BlackjackLib
             return card; 
         }
 
-        public IEnumerator<Card> GetEnumerator() => cards.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        internal void Randomize()
+        internal void Shuffle()
         {
             Card cardToSwap; 
             byte count; 
@@ -48,31 +45,22 @@ namespace BlackjackLib
             byte rankIndex;
             byte suitIndex;
 
-            cards.Clear(); 
-            
-            populateCardsList();
-            shuffleCards();
+            cards.Clear();
 
-            void populateCardsList()
+            for (rankIndex = 0; rankIndex < CARDS_PER_SUIT; rankIndex++)
             {
-                for (rankIndex = 0; rankIndex < CARDS_PER_SUIT; rankIndex++)
+                for (suitIndex = 0; suitIndex < CARDS_PER_RANK; suitIndex++)
                 {
-                    for (suitIndex = 0; suitIndex < CARDS_PER_RANK; suitIndex++)
-                    {
-                        cards.Add(new Card((Rank)rankIndex, (Suit)suitIndex));
-                    }
+                    cards.Add(new Card((Rank)rankIndex, (Suit)suitIndex));
                 }
             }
 
-            void shuffleCards()
+            for (count = (byte)(cards.Count() - 1); count > 0; count--)
             {
-                for (count = (byte) (cards.Count() - 1); count > 0; count--)
-                {
-                    randomSwapIndex = (byte)randomGenerator.Next((byte)(count));
-                    cardToSwap = cards[count];
-                    cards[count] = cards[randomSwapIndex];
-                    cards[randomSwapIndex] = cardToSwap;
-                }
+                randomSwapIndex = (byte)randomGenerator.Next((byte)(count));
+                cardToSwap = cards[count];
+                cards[count] = cards[randomSwapIndex];
+                cards[randomSwapIndex] = cardToSwap;
             }
         }
 

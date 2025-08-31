@@ -10,7 +10,7 @@ namespace BlackjackLib
 {
     public enum HandType : byte
     {
-        Dealt, 
-        SplitOnce
+        Main, 
+        Split
     }
 }

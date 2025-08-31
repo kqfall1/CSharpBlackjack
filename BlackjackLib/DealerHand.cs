@@ -82,6 +82,19 @@ namespace BlackjackLib
             }
         }
 
+        internal override Card MostRecentlyDealtCard
+        {
+            get
+            {
+                if (AllCards.Length > 2)
+                {
+                    return base.MostRecentlyDealtCard; 
+                }
+
+                return DownCard; 
+            }
+        }
+
         internal override byte Score
         {
             get

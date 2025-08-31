@@ -23,8 +23,6 @@ namespace BlackjackLib
             }
         }
 
-        internal Pot() {}
-
         internal decimal Scoop()
         {
             decimal chipAmount = ChipAmount;
@@ -34,7 +32,7 @@ namespace BlackjackLib
 
         public override string ToString()
         {
-            return $"Amount of chips in pot: {ChipAmount:C}. ";
+            return $"Chips in pot: {ChipAmount:C}. ";
         }
     }
 }

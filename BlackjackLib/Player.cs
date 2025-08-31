@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,24 +10,24 @@ namespace BlackjackLib
 {
     public class Player : BlackjackEntity
     {
-        internal List<PlayerHand> Hands
-        {  
-            get
-            {
-                return new List<PlayerHand>() { MainHand as PlayerHand, SplitHand };
-            }
-        }
-        
-        private Bet insuranceBet; 
-        internal Bet InsuranceBet
+        internal PlayerHand[] HandsInShowdownOrder
         {
             get
             {
-                return insuranceBet;
+                if (SplitHand is null)
+                {
+                    return [MainHand as PlayerHand];
+                }
+                
+                return [SplitHand, MainHand as PlayerHand];
             }
-            set
+        }
+
+        internal bool IsPlaying
+        {
+            get
             {
-                insuranceBet = value;
+                return MainHand.Status is HandStatus.Drawing || MainHand.Status is HandStatus.WaitingOnSplitHand; 
             }
         }
 
@@ -47,28 +46,54 @@ namespace BlackjackLib
 
         internal Player() : base()
         {
-            MainHand = new PlayerHand(null, HandType.Dealt, this);
+            MainHand = new PlayerHand(null, HandType.Main, this);
+            SplitHand = null; 
         }
 
-        internal Bet PlaceBet(decimal chipAmount, Pot pot)
+        internal Bet CreateBet(Dealer dealer, decimal chipAmount)
         {
-            if (chipAmount > ChipAmount)
+            if (dealer.ChipAmount < chipAmount)
             {
-                throw new InsufficientChipsException(chipAmount, Game.BlackjackEntityToClassName(this));
+                throw new InsufficientChipsException(dealer, chipAmount);
+            }
+            else if (chipAmount > ChipAmount)
+            {
+                throw new InsufficientChipsException(this, chipAmount);
             }
 
-            ChipAmount -= chipAmount;
-            return new Bet(chipAmount, pot);
+            RemoveChips(chipAmount);
+            return new Bet(chipAmount, new Pot() { ChipAmount = chipAmount });
         }
-        internal string PlaceDoubleDownBet(PlayerHand playerHand)
+
+        internal void DoubleDownOnBet(Dealer dealer, PlayerHand playerHand)
         {
-            if (!playerHand.CanDoubleDown)
+            if (dealer.ChipAmount < playerHand.Bet.DoubleDownChipAmount)
             {
-                throw new InsufficientChipsException(playerHand.Bet.ChipAmount, Game.BlackjackEntityToClassName(this));
+                throw new InsufficientChipsException(dealer, playerHand.Bet.DoubleDownChipAmount);
+            }
+            else if (!playerHand.CanDoubleDown)
+            {
+                throw new InsufficientChipsException(this, playerHand.Bet.ChipAmount);
             }
 
-            ChipAmount -= playerHand.Bet.ChipAmount;
-            return playerHand.Bet.DoubleChips();
+            playerHand.DoubleDownOnBet(dealer);
+
+            if (!playerHand.IsBusted)
+            {
+                playerHand.Status = HandStatus.Standing;
+            }
+        }
+
+        internal PlayerHand Split(Dealer dealer)
+        {
+            PlayerHand mainHand = MainHand as PlayerHand;
+
+            if (!mainHand.CanSplit)
+            {
+                throw new InvalidOperationException($"You cannot split hand:\n\n\t{mainHand.ToString()}");
+            }
+
+            return mainHand.Split(dealer);
         }
 
         public override string ToString()

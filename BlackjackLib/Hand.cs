@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    /* Encapsulates logic regarding the cards the player/dealer has and their game circumstances pertinent to their cards. This
-    does not encapsulate behaviors that can be performed regarding a player's/dealer's cards and their game circumstances
-    because this class has no object reference to the other necessary instansiations of other classes. The Game class does that
-    instead. This was done to prevent tight coupling between classes and because Game should encapsulate all logic regarding the
-    rules of the game. For example, one implementation could be an instance method such as Hit() in the Hand class by adding static fields
-    to the Game class that Hand then refers to, but that tighly couples the two classes and undermines the purpose of the Game class. */
     public abstract class Hand
     {
         internal virtual byte AceCount
@@ -68,12 +62,15 @@ namespace BlackjackLib
         {
             get
             {
-                if (this is null)
-                {
-                    return false;
-                }
-
                 return Score > Game.BUST_SCORE_LIMIT; 
+            }
+        }
+
+        internal virtual Card MostRecentlyDealtCard
+        {
+            get
+            {
+                return UpCards[UpCards.Count - 1];
             }
         }
 
@@ -98,18 +95,11 @@ namespace BlackjackLib
             }
         }
 
-        private List<Card> upCards; 
-        internal List<Card> UpCards //REMOVE THIS
-        {
-            get
-            {
-                return upCards;
-            }
-        }
+        internal List<Card> UpCards; 
 
         internal Hand()
         {
-            upCards = new List<Card>();
+            UpCards = new List<Card>();
             Status = HandStatus.WaitingToDraw;
         }
 
@@ -126,31 +116,28 @@ namespace BlackjackLib
             return cardValuesSum; 
         }
 
-        internal string Hit(Card card)
+        internal void Stand()
         {
-            string cardStr = card.ToString();
-            UpCards.Add(card);
-            return cardStr; 
+            Status = HandStatus.Standing;
         }
 
         public virtual string ToString()
         {
-            byte count; 
+            byte count;
+            string endingCharacters = ", "; 
             string handStr = $"Up cards: ";
 
             for (count = 0; count < UpCards.Count; count++)
             {
                 if (count == UpCards.Count - 1)
                 {
-                    handStr = $"{handStr}{UpCards[count]}.";
+                    endingCharacters = "."; 
                 }
-                else
-                {
-                    handStr = $"{handStr}{UpCards[count]}, ";
-                }
+
+                handStr = $"{handStr}{UpCards[count]}{endingCharacters}";
             }
 
-            return $"{handStr} Score: {Score}"; 
+            return $"{handStr} Score: {Score}."; 
         }
     }
 }

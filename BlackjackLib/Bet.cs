@@ -23,6 +23,22 @@ namespace BlackjackLib
             }
         }
 
+        public decimal DoubleDownChipAmount
+        {
+            get
+            {
+                return ChipAmount * 2; 
+            }
+        }
+
+        public decimal InsuranceBetChipAmount
+        {
+            get
+            {
+                return ChipAmount / 2;
+            }
+        }
+
         internal readonly Pot Pot;
 
         internal Bet(decimal chipAmount, Pot pot)
@@ -32,14 +48,13 @@ namespace BlackjackLib
             pot.ChipAmount = chipAmount; 
         }
 
-        internal string DoubleChips()
+        internal void DoubleDown()
         {
             ChipAmount *= 2;
             Pot.ChipAmount = ChipAmount;
-            return $"You have doubled your original bet of {ChipAmount / 2:C} to {ChipAmount:C}."; 
         }
 
-        internal decimal Payout(Dealer dealer, PayoutRatio payoutRatio)
+        internal decimal Payout(Dealer dealer, PayoutRatio payoutRatio) //USE THIS WHETHER THE PLAYER WINS OR NOT!!! I MUST CREATE A STATIC READONLY PAYOUTRATIO FIRST
         {
             decimal potAmount = Pot.Scoop();
             decimal payout = payoutRatio.PayoutMultiplier * potAmount;
@@ -48,9 +63,14 @@ namespace BlackjackLib
             return payout; 
         }
 
+        public decimal PayoutAmount(PayoutRatio payoutRatio)
+        {
+            return payoutRatio.PayoutMultiplier * ChipAmount; 
+        }
+
         public override string ToString()
         {
-            return $"{ChipAmount:C}, {Pot}"; 
+            return $"{ChipAmount:C}"; 
         }
     }
 }

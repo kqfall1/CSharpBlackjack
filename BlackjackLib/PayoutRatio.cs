@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    internal class PayoutRatio
+    public class PayoutRatio
     {
         internal static readonly PayoutRatio INSURANCE_BET = new PayoutRatio(2, 1);
         internal static readonly PayoutRatio MAIN_BET = new PayoutRatio(2, 1);
-        internal static readonly PayoutRatio MAIN_BET_BLACKJACK = new PayoutRatio(3, 2);
+        internal static readonly PayoutRatio BLACKJACK = new PayoutRatio(3, 2);
         internal static readonly PayoutRatio PUSH = new PayoutRatio(1, 1);
-        internal static readonly PayoutRatio SURRENDER = new PayoutRatio(1, 2); //THIS ISN'T IMPLEMENTED!!!!!
+        internal static readonly PayoutRatio SURRENDER = new PayoutRatio(1, 2); 
 
         internal decimal PayoutMultiplier
         {

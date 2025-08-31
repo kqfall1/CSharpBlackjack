@@ -16,14 +16,36 @@ namespace BlackjackLib
         {
             get
             {
-                return MainHand.Score < 17; 
+                return MainHand.Score < Game.DEALER_MINIMUM_SCORE_TO_STAND; 
             }
         }
 
-        internal Dealer(Deck deck) : base()
+        internal bool HasPlayed
         {
-            Deck = deck;
+            get
+            {
+                DealerHand dealerMainHand = MainHand as DealerHand;
+                
+                return MainHand.IsBusted ||
+                       dealerMainHand.AllCards.Count() > 2 ||
+                       MainHand.Status is HandStatus.Standing;
+            }
+        }
+
+        internal Dealer() : base()
+        {
+            Deck = new Deck();
             MainHand = new DealerHand(this);
+        }
+        internal void Deal(PlayerHand playerMainHand) 
+        {
+            DealerHand dealerHand = MainHand as DealerHand;
+
+            Hit(playerMainHand);
+            Hit(dealerHand);
+            Hit(playerMainHand);
+            Hit(dealerHand); 
+            MainHand = dealerHand;
         }
 
         internal Card DealCard()
@@ -31,9 +53,23 @@ namespace BlackjackLib
             return Deck.DrawCard(); 
         }
 
+        internal void Hit(Hand hand)
+        {
+            hand.UpCards.Add(DealCard());
+        }
+
+        internal bool ShouldDealerPlay(Player player, PlayerHand activePlayerHand)
+        {
+            return !player.IsPlaying &&
+                   !activePlayerHand.IsBlackjack &&
+                   !activePlayerHand.IsBusted &&
+                   activePlayerHand.Status is not HandStatus.Surrendered && 
+                   MainHand.Status == HandStatus.WaitingToDraw;
+        }
+
         internal void Shuffle()
         {
-            Deck.Randomize(); 
+            Deck.Shuffle(); 
         }
 
         public override string ToString()
