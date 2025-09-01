@@ -67,6 +67,10 @@ namespace BlackjackLib
         {
             return payoutRatio.PayoutMultiplier * ChipAmount; 
         }
+        public decimal PayoutAmountDoubleDown()
+        {
+            return PayoutRatio.MAIN_BET.PayoutMultiplier * DoubleDownChipAmount;
+        }
 
         public override string ToString()
         {

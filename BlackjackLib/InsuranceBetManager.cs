@@ -22,13 +22,13 @@ namespace BlackjackLib
             {
                 insuranceBetWinnings = playerMainHand.InsuranceBet.Payout(dealer, PayoutRatio.INSURANCE_BET);
                 player.AddChips(insuranceBetWinnings);
-                return $"You win {insuranceBetWinnings:C} on your insurance bet of {insuranceBetChipAmount:C}";
+                return MessageManager.DetermineInsuranceBetWinString(insuranceBetWinnings, insuranceBetChipAmount);
             }
 
             dealerWinnings = playerMainHand.InsuranceBet.Pot.Scoop();
             dealer.AddChips(dealerWinnings);
             playerMainHand.InsuranceBet = null;
-            return $"The dealer does not have a blackjack! You forfeit your bet of {insuranceBetChipAmount:C}. Play on!";
+            return MessageManager.DetermineInsuranceBetLossString(playerMainHand.InsuranceBet.ChipAmount); 
         }
 
         internal static bool InsuranceBetPossible(Dealer dealer, Player player)

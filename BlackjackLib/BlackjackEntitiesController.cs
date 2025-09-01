@@ -38,10 +38,13 @@ namespace BlackjackLib
                 Dealer.MainHand.Status = HandStatus.Standing;
             }
         }
-        public void AlterActivePlayerHandAfterDrawingOnASplitHand(PlayerHand playerMainHand)
+        public void AlterActivePlayerHandAfterDrawing()
         {
-            playerMainHand.Status = HandStatus.Drawing;
-            ActivePlayerHand = playerMainHand;
+            if (ActivePlayerHand == Player.SplitHand)
+            {
+                Player.MainHand.Status = HandStatus.Drawing;
+                ActivePlayerHand = Player.MainHand as PlayerHand;
+            }
         }
 
         internal string Deal()
@@ -49,7 +52,7 @@ namespace BlackjackLib
             try
             {
                 Dealer.Deal(ActivePlayerHand);
-                return StringInputOutputManager.DetermineDealBriefString(Dealer.MainHand as DealerHand, ActivePlayerHand); 
+                return MessageManager.DetermineDealBriefString(Dealer.MainHand as DealerHand, ActivePlayerHand); 
             }
             catch (InvalidOperationException ioException)
             {
@@ -69,14 +72,14 @@ namespace BlackjackLib
 
                 if (Dealer.MainHand.IsBusted)
                 {
-                    return $"{StringInputOutputManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)} {StringInputOutputManager.DetermineEntityBustsString(Dealer.MainHand)}";
+                    return $"{MessageManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)} {MessageManager.DetermineEntityBustsString(Dealer.MainHand)}";
                 }
                 else if (Dealer.MainHand.Status is HandStatus.Standing)
                 {
-                    return $"{StringInputOutputManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)} {StringInputOutputManager.DetermineEntityStandsString(Dealer.MainHand)}";
+                    return $"{MessageManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)} {MessageManager.DetermineEntityStandsString(Dealer.MainHand)}";
                 }
 
-                return $"{StringInputOutputManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)}";
+                return $"{MessageManager.DetermineEntityActionString(Dealer.MainHand as DealerHand)}";
             }
             catch (InvalidOperationException ioException)
             {
@@ -88,38 +91,29 @@ namespace BlackjackLib
             }
         }
 
-        public string ExecutePlayerAction(string inputStr)
+        public string ExecutePlayerAction(PlayerInputAbbreviation playerInputAbbreviation)
         {
-            char inputChar; 
-            
             try
             {
-                switch (inputStr)
+                switch (playerInputAbbreviation)
                 {
-                    case StringInputOutputManager.SPLIT_ABBREVIATION: 
-                        Player.SplitHand = Player.Split(Dealer);
-                        ActivePlayerHand = Player.SplitHand;
-                        return StringInputOutputManager.DetermineSplitString(Player.MainHand as PlayerHand, Player.SplitHand);
-                    case StringInputOutputManager.STAND_ABBREVIATION:
-                        ActivePlayerHand.Stand();
-                        return StringInputOutputManager.DetermineEntityStandsString(ActivePlayerHand);
-                    case StringInputOutputManager.SURRENDER_ABBREVIATION:
-                        ActivePlayerHand.Surrender();
-                        return StringInputOutputManager.DetermineSurrenderString(ActivePlayerHand); 
-                }
-
-                inputChar = Convert.ToChar(inputStr);
-
-                switch (inputChar)
-                {
-                    case StringInputOutputManager.DOUBLE_DOWN_ABBREVIATION:
+                    case PlayerInputAbbreviation.D:
                         Player.DoubleDownOnBet(Dealer, ActivePlayerHand);
-                        return StringInputOutputManager.DetermineDoubleDownString(ActivePlayerHand); 
-                    case StringInputOutputManager.HIT_ABBREVIATION:
+                        ActivePlayerHand.Stand();
+                        return MessageManager.DetermineDoubleDownString(ActivePlayerHand);
+                    case PlayerInputAbbreviation.H:
                         Dealer.Hit(ActivePlayerHand);
-                        return StringInputOutputManager.DetermineEntityActionString(ActivePlayerHand);
-                    default:
-                        throw new InvalidStringInputException(inputStr);
+                        return MessageManager.DetermineEntityActionString(ActivePlayerHand);
+                    case PlayerInputAbbreviation.SP: 
+                        Player.SplitHand = ActivePlayerHand.Split(Dealer);
+                        ActivePlayerHand = Player.SplitHand;
+                        return MessageManager.DetermineSplitString(Player.MainHand as PlayerHand, Player.SplitHand);
+                    case PlayerInputAbbreviation.ST:
+                        ActivePlayerHand.Stand();
+                        return MessageManager.DetermineEntityStandsString(ActivePlayerHand);
+                    default: 
+                        ActivePlayerHand.Surrender();
+                        return MessageManager.DetermineSurrenderString(ActivePlayerHand); 
                 }
             }
             catch (InvalidOperationException ioException)

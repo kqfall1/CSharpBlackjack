@@ -10,6 +10,33 @@ namespace BlackjackLib
 {
     public class Player : BlackjackEntity
     {
+        public bool CanSurrender
+        {
+            get
+            {
+                return MainHand.UpCards.Count == 2 &&
+                       SplitHand is null;
+            }
+        }
+
+        internal bool HasAnEligibleHandToInduceDealerPlay
+        {
+            get
+            {
+                Hand[] hands = HandsInShowdownOrder;
+
+                foreach (Hand hand in hands)
+                {
+                    if (!hand.IsBusted)
+                    {
+                        return true; 
+                    }
+                }
+
+                return false; 
+            }
+        }
+        
         internal PlayerHand[] HandsInShowdownOrder
         {
             get
@@ -23,11 +50,20 @@ namespace BlackjackLib
             }
         }
 
+        internal bool HasSplit
+        {
+            get
+            {
+                return SplitHand is not null;
+            }
+        }
+
         internal bool IsPlaying
         {
             get
             {
-                return MainHand.Status is HandStatus.Drawing || MainHand.Status is HandStatus.WaitingOnSplitHand; 
+                return MainHand.Status is HandStatus.Drawing ||
+                       SplitHand?.Status is HandStatus.Drawing;
             }
         }
 
@@ -67,33 +103,16 @@ namespace BlackjackLib
 
         internal void DoubleDownOnBet(Dealer dealer, PlayerHand playerHand)
         {
-            if (dealer.ChipAmount < playerHand.Bet.DoubleDownChipAmount)
-            {
-                throw new InsufficientChipsException(dealer, playerHand.Bet.DoubleDownChipAmount);
-            }
-            else if (!playerHand.CanDoubleDown)
+            if (!playerHand.CanDoubleDown)
             {
                 throw new InsufficientChipsException(this, playerHand.Bet.ChipAmount);
             }
+            else if (playerHand.Bet.PayoutAmountDoubleDown() > dealer.ChipAmount)
+            {
+                throw new InsufficientChipsException(dealer, playerHand.Bet.ChipAmount);
+            }
 
             playerHand.DoubleDownOnBet(dealer);
-
-            if (!playerHand.IsBusted)
-            {
-                playerHand.Status = HandStatus.Standing;
-            }
-        }
-
-        internal PlayerHand Split(Dealer dealer)
-        {
-            PlayerHand mainHand = MainHand as PlayerHand;
-
-            if (!mainHand.CanSplit)
-            {
-                throw new InvalidOperationException($"You cannot split hand:\n\n\t{mainHand.ToString()}");
-            }
-
-            return mainHand.Split(dealer);
         }
 
         public override string ToString()

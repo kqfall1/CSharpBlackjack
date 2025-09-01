@@ -16,7 +16,9 @@ namespace BlackjackLib
         {
             get
             {
-                return Bet.ChipAmount <= Player.ChipAmount; 
+                return UpCards.Count == 2 &&
+                       Status is HandStatus.Drawing &&
+                       Bet.DoubleDownChipAmount <= Player.ChipAmount;
             }
         }
 
@@ -28,20 +30,22 @@ namespace BlackjackLib
             }
         }
 
-        public bool CanSurrender
-        {
-            get
-            {
-                return UpCards.Count == 2; 
-            }
-        }
-
         public readonly HandType HandType;
         public string HandTypeString
         {
             get
             {
                 return $"{HandType.ToString().ToLower()} hand";
+            }
+        }
+
+        public override bool IsBlackjack
+        {
+            get
+            {
+                return base.IsBlackjack &&
+                       UpCards.Count == 2 &&
+                       !Player.HasSplit; 
             }
         }
 
@@ -99,7 +103,12 @@ namespace BlackjackLib
         internal PlayerHand Split(Dealer dealer)
         {
             Card splitCard;
-            PlayerHand splitHand; 
+            PlayerHand splitHand;
+
+            if (!CanSplit)
+            {
+                throw new InvalidOperationException($"You cannot split hand:\n\n\t{this.ToString()}\n");
+            }
 
             splitCard = UpCards[1]; 
             UpCards.RemoveAt(1);
@@ -107,6 +116,7 @@ namespace BlackjackLib
             Status = HandStatus.WaitingOnSplitHand; 
 
             splitHand = new PlayerHand(Player.CreateBet(dealer, Bet.ChipAmount), HandType.Split, Player);
+            splitHand.UpCards.Add(splitCard);
             dealer.Hit(splitHand);
             splitHand.Status = HandStatus.Drawing;
             return splitHand; 
@@ -114,7 +124,7 @@ namespace BlackjackLib
 
         internal void Surrender()
         {
-            if (!CanSurrender)
+            if (!Player.CanSurrender)
             {
                 throw new InvalidOperationException($"You cannot currently surrender your {HandTypeString}.");
             }

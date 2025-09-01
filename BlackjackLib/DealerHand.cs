@@ -55,7 +55,8 @@ namespace BlackjackLib
         {
             get
             {
-                return Score is Game.BUST_SCORE_LIMIT && AceCount == 1 && AllCards.Length == 2; 
+                return base.IsBlackjack && 
+                       AllCards.Length == 2; 
             }
         }
 

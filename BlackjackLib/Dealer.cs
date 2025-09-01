@@ -16,19 +16,9 @@ namespace BlackjackLib
         {
             get
             {
-                return MainHand.Score < Game.DEALER_MINIMUM_SCORE_TO_STAND; 
-            }
-        }
-
-        internal bool HasPlayed
-        {
-            get
-            {
-                DealerHand dealerMainHand = MainHand as DealerHand;
-                
-                return MainHand.IsBusted ||
-                       dealerMainHand.AllCards.Count() > 2 ||
-                       MainHand.Status is HandStatus.Standing;
+                return MainHand.Score < Game.DEALER_MINIMUM_SCORE_TO_STAND ||
+                       (MainHand.CardValuesSum == 17 &&
+                       MainHand.AceCount == 1); 
             }
         }
 
@@ -44,26 +34,31 @@ namespace BlackjackLib
             Hit(playerMainHand);
             Hit(dealerHand);
             Hit(playerMainHand);
-            Hit(dealerHand); 
-            MainHand = dealerHand;
-        }
+            Hit(dealerHand);
 
-        internal Card DealCard()
-        {
-            return Deck.DrawCard(); 
+            MainHand = dealerHand;
         }
 
         internal void Hit(Hand hand)
         {
-            hand.UpCards.Add(DealCard());
+            hand.UpCards.Add(Deck.DrawCard());
+
+            if (hand.IsBlackjack)
+            {
+                hand.Status = HandStatus.Blackjack; 
+            }
+            else if (hand.IsBusted)
+            {
+                hand.Status = HandStatus.Busted;
+            }
         }
 
-        internal bool ShouldDealerPlay(Player player, PlayerHand activePlayerHand)
+        internal bool ShouldDealerPlay(Player player, PlayerHand playerMainHand)
         {
             return !player.IsPlaying &&
-                   !activePlayerHand.IsBlackjack &&
-                   !activePlayerHand.IsBusted &&
-                   activePlayerHand.Status is not HandStatus.Surrendered && 
+                   player.HasAnEligibleHandToInduceDealerPlay &&
+                   !playerMainHand.IsBlackjack &&
+                   playerMainHand.Status is not HandStatus.Surrendered && 
                    MainHand.Status == HandStatus.WaitingToDraw;
         }
 

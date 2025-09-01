@@ -9,7 +9,6 @@ namespace BlackjackApp
     {
         static void Main(string[] args)
         {
-            //GREETING PROMPT???
             GameController.CreateGameAndPlay(); 
         }
     }

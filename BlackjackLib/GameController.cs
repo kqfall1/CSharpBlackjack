@@ -14,6 +14,8 @@ namespace BlackjackLib
 
         private static void BettingRoundLoop()
         {
+            Console.WriteLine(MessageManager.GREETING_PROMPT);
+
             do
             {
                 PrepareForBettingRound(); 
@@ -45,7 +47,7 @@ namespace BlackjackLib
 
         static void DealerPlay()
         {
-            Console.WriteLine(StringInputOutputManager.DetermineDealerHandStringBrief(game.EntitiesController.Dealer.MainHand as DealerHand));
+            Console.WriteLine(MessageManager.DetermineDealerHandStringBrief(game.EntitiesController.Dealer.MainHand as DealerHand));
             
             while (game.EntitiesController.Dealer.MustHit)
             {
@@ -84,23 +86,21 @@ namespace BlackjackLib
 
         static void PlayerMainActionStringInputLoop()
         {
-            string inputStr;
+            PlayerInputAbbreviation playerInputAbbreviation; 
 
             while (game.EntitiesController.Player.IsPlaying)
             {
-                inputStr = StringInputOutputManager.FormatUserInputPrompt(game.EntitiesController.ActivePlayerHand);
-                Console.WriteLine(game.EntitiesController.ExecutePlayerAction(inputStr));
+                playerInputAbbreviation = PromptManager.FormatUserInputPrompt(game.EntitiesController.ActivePlayerHand);
+                Console.WriteLine(game.EntitiesController.ExecutePlayerAction(playerInputAbbreviation));
 
-                if (game.EntitiesController.ActivePlayerHand.HandType is HandType.Main &&
-                   (game.EntitiesController.ActivePlayerHand.IsBlackjack ||
-                   game.EntitiesController.ActivePlayerHand.IsBusted) ||
-                   game.EntitiesController.ActivePlayerHand.Status is HandStatus.Standing ||
-                   game.EntitiesController.ActivePlayerHand.Status is HandStatus.Surrendered)
+                if (game.EntitiesController.ActivePlayerHand.HandType is HandType.Split &&
+                    (game.EntitiesController.ActivePlayerHand.IsBlackjack ||
+                    game.EntitiesController.ActivePlayerHand.IsBusted ||
+                    game.EntitiesController.ActivePlayerHand.Status is HandStatus.Standing ||
+                    game.EntitiesController.ActivePlayerHand.Status is HandStatus.Surrendered))
                 {
-                    break;
+                    game.EntitiesController.AlterActivePlayerHandAfterDrawing();
                 }
-
-                game.EntitiesController.AlterActivePlayerHandAfterDrawingOnASplitHand(game.EntitiesController.Player.MainHand as PlayerHand); 
             }
         }
 
@@ -108,34 +108,31 @@ namespace BlackjackLib
         {
             decimal chipAmount; 
             PlayerHand playerMainHand = game.EntitiesController.ActivePlayerHand;
-            char inputCharacter = ' '; 
+            PlayerInputAbbreviation playerInputAbbreviation; 
 
-            Console.WriteLine(StringInputOutputManager.DetermineChipAmountBriefString(game.EntitiesController.Dealer, game.EntitiesController.Player));
+            Console.WriteLine(MessageManager.DetermineChipAmountBriefString(game.EntitiesController.Dealer, game.EntitiesController.Player));
 
             while (playerMainHand.Bet is null)
             {
-                chipAmount = StringInputOutputManager.PromptPlayerForBetInput(game.EntitiesController.Player);
+                chipAmount = PromptManager.PromptPlayerForBetInput(game.EntitiesController.Player);
                 game.EntitiesController.ActivePlayerHand.PlaceMainBet(chipAmount, game.EntitiesController.Dealer);
             }
 
             game.EntitiesController.Dealer.Deal(game.EntitiesController.ActivePlayerHand);
-            Console.WriteLine(StringInputOutputManager.DetermineDealBriefString(game.EntitiesController.Dealer.MainHand as DealerHand, game.EntitiesController.ActivePlayerHand)); 
+            Console.WriteLine(MessageManager.DetermineDealBriefString(game.EntitiesController.Dealer.MainHand as DealerHand, game.EntitiesController.ActivePlayerHand)); 
 
             if (InsuranceBetManager.InsuranceBetPossible(game.EntitiesController.Dealer, game.EntitiesController.Player))
             {
-                while (inputCharacter == ' ')
-                {
-                    inputCharacter = StringInputOutputManager.PromptPlayerForYesOrNoInput(StringInputOutputManager.DetermineInsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.InsuranceBetChipAmount));
+                playerInputAbbreviation = PromptManager.PromptPlayerForYesOrNoInput(MessageManager.DetermineInsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.InsuranceBetChipAmount));
 
-                    switch (inputCharacter)
+                    switch (playerInputAbbreviation)
                     {
-                        case StringInputOutputManager.YES_ABBREVIATION:
+                        case PlayerInputAbbreviation.Y:
                             InsuranceBetManager.PlaceInsuranceBet(game.EntitiesController.Dealer, game.EntitiesController.Player);
                             InsuranceBetManager.ResolveInsuranceBet(game.EntitiesController.Dealer, game.EntitiesController.Player);
-                            Console.WriteLine(StringInputOutputManager.DetermineInsuranceBetResolutionString(game.EntitiesController.Dealer, game.EntitiesController.ActivePlayerHand)); 
+                            Console.WriteLine(MessageManager.DetermineInsuranceBetResolutionString(game.EntitiesController.Dealer, game.EntitiesController.ActivePlayerHand)); 
                             break;
                     }
-                }
             }
         }
     }

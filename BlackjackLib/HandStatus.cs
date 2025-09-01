@@ -10,6 +10,8 @@ namespace BlackjackLib
 {
     public enum HandStatus : byte
     {
+        Blackjack, 
+        Busted,
         Drawing, 
         Standing, 
         Surrendered,

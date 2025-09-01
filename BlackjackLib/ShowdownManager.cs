@@ -10,30 +10,27 @@ namespace BlackjackLib
 {
     internal static class ShowdownManager
     {
-        //REPLACE ALL THESE STRING LITERALS WITH CALLS TO MEMBERS OF STRINGINPUTOUTPUTMANAGER
         internal static string Blackjack(Dealer dealer, PlayerHand playerHand)
         {
             string showdownString = $"Your {playerHand.HandTypeString}:";
 
             if (dealer.MainHand.IsBlackjack && playerHand.IsBlackjack)
             {
-                playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH)); 
-                return $"{showdownString} both you and the dealer were dealt a blackjack. Your bet of {playerHand.Bet.ChipAmount:C} is pushed.";
+                playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH));
+                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackPushString(playerHand.Bet.ChipAmount)}";
             }
             else if (dealer.MainHand.IsBlackjack)
             {
                 dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} the dealer was dealt a blackjack. You have been defeated and forfeit your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackDealerWinString(playerHand.Bet.ChipAmount)}";
             }
             else if (playerHand.IsBlackjack)
             {
-                playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.BLACKJACK)); 
-                return $"{showdownString} you were dealt a blackjack. You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.BLACKJACK):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+                playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.BLACKJACK));
+                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackPlayerWinString(playerHand)}";
             }
-            else
-            {
-                throw new InvalidOperationException("Game.ShowdownBlackjack() cannot determine which blackjack entity has a blackjack.");
-            }
+            
+            throw new InvalidOperationException(MessageManager.NO_BLACKJACK_FOUND_MESSAGE);
         }
         internal static string Busted(Dealer dealer, PlayerHand playerHand)
         {
@@ -42,42 +39,38 @@ namespace BlackjackLib
             if (playerHand.IsBusted)
             {
                 dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} you bust with a score of {playerHand.Score}. You are defeated and forfeit your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} {MessageManager.DetermineShowdownBustedDealerWinString(playerHand)}";
             }
             else if (dealer.MainHand.IsBusted)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.MAIN_BET));
-                return $"{showdownString} the dealer busts with a score of {dealer.MainHand.Score}. You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} {MessageManager.DetermineShowdownBustedPlayerWinString(dealer, playerHand)}";
             }
-            else
-            {
-                throw new InvalidOperationException("Game.ShowdownBusted cannot determine which blackjack entity has busted.");
-            }
+
+            throw new InvalidOperationException(MessageManager.NO_BUSTED_ENTITY_FOUND_MESSAGE);
         }
         internal static string Normal(Dealer dealer, PlayerHand playerHand)
         {
-            string showdownString = $"Your {playerHand.HandTypeString}: your score is {playerHand.Score} and the dealer's score is {dealer.MainHand.Score}.";
+            string showdownString = MessageManager.DetermineShowdownNormalBriefString(dealer, playerHand);
 
             if (playerHand.Score > dealer.MainHand.Score)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.MAIN_BET));
-                return $"{showdownString} You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} {MessageManager.DetermineShowdownNormalPlayerWinString(playerHand)}";
             }
             else if (playerHand.Score < dealer.MainHand.Score)
             {
                 dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} You have been defeated and forfeit your bet of {playerHand.Bet.ChipAmount:C}.";
+                return $"{showdownString} {MessageManager.DetermineShowdownNormalDealerWinString(playerHand)}"; 
             }
-            else
-            {
-                playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH));
-                return $"{showdownString} You have tied the dealer's score and have your bet of {playerHand.Bet.PayoutAmount(PayoutRatio.PUSH):C} pushed.";
-            }
+            
+            playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH));
+            return $"{showdownString} {MessageManager.DetermineShowdownNormalPushString(playerHand)}";
         }
         internal static string Surrendered(Dealer dealer, PlayerHand playerHand)
         {
-            playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.SURRENDER)); 
-            return $"Your {playerHand.HandTypeString}: you receive {playerHand.Bet.PayoutAmount(PayoutRatio.SURRENDER):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+            playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.SURRENDER));
+            return MessageManager.DetermineShowdownSurrenderString(playerHand);
         }
     }
 }

@@ -10,6 +10,6 @@ namespace BlackjackLib
 {
     internal class InsufficientChipsException : Exception
     {
-        public InsufficientChipsException(BlackjackEntity blackjackEntity, decimal chipAmount) : base(StringInputOutputManager.DetermineInsufficientChipsExceptionMessage(blackjackEntity, chipAmount)) {}
+        public InsufficientChipsException(BlackjackEntity blackjackEntity, decimal chipAmount) : base(MessageManager.DetermineInsufficientChipsExceptionMessage(blackjackEntity, chipAmount)) {}
     }
 }

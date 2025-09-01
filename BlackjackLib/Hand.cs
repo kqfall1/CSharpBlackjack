@@ -49,7 +49,8 @@ namespace BlackjackLib
         {
             get
             {
-                if (Score is Game.BUST_SCORE_LIMIT && AceCount == 1 && UpCards.Count == 2)
+                if (Score is Game.BUST_SCORE_LIMIT && 
+                    AceCount == 1)
                 {
                     return true; 
                 }
