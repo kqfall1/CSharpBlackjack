@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class DealerHand : Hand
+    internal class DealerHand : Hand
     {
         internal override byte AceCount
         {
             get
             {
-                byte aceCount = base.AceCount; 
-
                 if (DownCard is not null && DownCard.Rank is Rank.Ace)
                 {
-                    aceCount++; 
+                    return (byte) (base.AceCount + 1); 
                 }
 
-                return aceCount;
+                return base.AceCount;
             }
         }
         
@@ -34,7 +32,7 @@ namespace BlackjackLib
                     return UpCards.ToArray();
                 }
 
-                return new List<Card>(UpCards) { DownCard }.ToArray();
+                return new List<Card>(UpCards){DownCard}.ToArray();
             }
         }
 
@@ -42,16 +40,16 @@ namespace BlackjackLib
         {
             get
             {
-                if (DownCard is null)
+                if (DownCard is not null)
                 {
-                    return base.CardValuesSum;
+                    return (byte)(base.CardValuesSum + DownCard.Value);
                 }
-                
-                return (byte) (base.CardValuesSum + DownCard.Value); 
+
+                return base.CardValuesSum;
             }
         }
 
-        public override bool IsBlackjack
+        internal override bool IsBlackjack
         {
             get
             {
@@ -63,7 +61,7 @@ namespace BlackjackLib
         internal readonly Dealer Dealer; 
         
         private Card downCard;
-        internal Card DownCard
+        private Card DownCard
         {
             get
             {
@@ -75,7 +73,7 @@ namespace BlackjackLib
             }
         }
 
-        public override bool IsBusted
+        internal override bool IsBusted
         {
             get
             {

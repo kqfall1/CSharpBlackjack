@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class Player : BlackjackEntity
+    internal class Player : BlackjackEntity
     {
-        public bool CanSurrender
+        internal bool CanSurrender
         {
             get
             {
@@ -68,13 +68,13 @@ namespace BlackjackLib
         }
 
         private PlayerHand splitHand; 
-        public PlayerHand SplitHand
+        internal PlayerHand SplitHand
         {
             get
             {
                 return splitHand;
             }
-            internal set
+            set
             {
                 splitHand = value;
             }
@@ -99,20 +99,6 @@ namespace BlackjackLib
 
             RemoveChips(chipAmount);
             return new Bet(chipAmount, new Pot() { ChipAmount = chipAmount });
-        }
-
-        internal void DoubleDownOnBet(Dealer dealer, PlayerHand playerHand)
-        {
-            if (!playerHand.CanDoubleDown)
-            {
-                throw new InsufficientChipsException(this, playerHand.Bet.ChipAmount);
-            }
-            else if (playerHand.Bet.PayoutAmountDoubleDown() > dealer.ChipAmount)
-            {
-                throw new InsufficientChipsException(dealer, playerHand.Bet.ChipAmount);
-            }
-
-            playerHand.DoubleDownOnBet(dealer);
         }
 
         public override string ToString()

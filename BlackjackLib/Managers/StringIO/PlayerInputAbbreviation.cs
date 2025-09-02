@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public enum PlayerInputAbbreviation
+    internal enum PlayerInputAbbreviation
     {
         D,
         H,

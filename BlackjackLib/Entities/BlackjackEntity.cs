@@ -8,29 +8,31 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public abstract class BlackjackEntity
-    {  
+    internal abstract class BlackjackEntity
+    {
+        private const decimal INITIAL_CHIP_AMOUNT = 5000;
+
         private decimal chipAmount;
-        public decimal ChipAmount
+        internal decimal ChipAmount
         {
             get
             {
                 return chipAmount;
             }
-            internal set
+            private set
             {
                 chipAmount = value;
             }
         }
 
         private Hand mainHand;
-        public Hand MainHand
+        internal Hand MainHand
         {
             get
             {
                 return mainHand;
             }
-            internal set
+            set
             {
                 mainHand = value;
             }
@@ -38,7 +40,7 @@ namespace BlackjackLib
 
         protected BlackjackEntity()
         {
-            ChipAmount = Game.INITIAL_CHIP_AMOUNT; 
+            ChipAmount = INITIAL_CHIP_AMOUNT; 
         }
 
         internal void AddChips(decimal amount)

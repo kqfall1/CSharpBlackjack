@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public abstract class Hand
+    internal abstract class Hand
     {
         internal virtual byte AceCount
         {
@@ -45,7 +45,7 @@ namespace BlackjackLib
             }
         }
 
-        public virtual bool IsBlackjack
+        internal virtual bool IsBlackjack
         {
             get
             {
@@ -59,7 +59,7 @@ namespace BlackjackLib
             }
         }
 
-        public virtual bool IsBusted
+        internal virtual bool IsBusted
         {
             get
             {
@@ -84,13 +84,13 @@ namespace BlackjackLib
         }
 
         private HandStatus status; 
-        public HandStatus Status
+        internal HandStatus Status
         {
             get
             {
                 return status;
             }
-            internal set
+            set
             {
                 status = value;
             }
@@ -110,7 +110,7 @@ namespace BlackjackLib
 
             while (cardValuesSum > 21 && scoreAdjustmentCount < AceCount)
             {
-                cardValuesSum -= Card.ACE_VALUES_DIFFERENCE;
+                cardValuesSum -= Card.DIFFERENCE_BETWEEN_HIGH_AND_LOW_ACE_VALUES;
                 scoreAdjustmentCount++;
             }
 

@@ -8,29 +8,8 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    internal static class InsuranceBetManager
+    internal static class InsuranceManager
     {
-        internal static string AlterConditionsAfterInsuranceBet(Player player, Dealer dealer)
-        {
-            PlayerHand playerMainHand = player.MainHand as PlayerHand; 
-            
-            decimal dealerWinnings;
-            decimal insuranceBetChipAmount = playerMainHand.InsuranceBet.ChipAmount;
-            decimal insuranceBetWinnings;
-
-            if (dealer.MainHand.IsBlackjack)
-            {
-                insuranceBetWinnings = playerMainHand.InsuranceBet.Payout(dealer, PayoutRatio.INSURANCE_BET);
-                player.AddChips(insuranceBetWinnings);
-                return MessageManager.DetermineInsuranceBetWinString(insuranceBetWinnings, insuranceBetChipAmount);
-            }
-
-            dealerWinnings = playerMainHand.InsuranceBet.Pot.Scoop();
-            dealer.AddChips(dealerWinnings);
-            playerMainHand.InsuranceBet = null;
-            return MessageManager.DetermineInsuranceBetLossString(playerMainHand.InsuranceBet.ChipAmount); 
-        }
-
         internal static bool InsuranceBetPossible(Dealer dealer, Player player)
         {
             DealerHand dealerHand = dealer.MainHand as DealerHand;
@@ -40,7 +19,7 @@ namespace BlackjackLib
                 playerMainHand.UpCards.Count == 2 &&
                 dealerHand.UpCards[0].Rank is Rank.Ace &&
                 playerMainHand.Bet.InsuranceBetChipAmount <= player.ChipAmount &&
-                playerMainHand.Bet.InsuranceBetChipAmount <= dealer.ChipAmount &&
+                playerMainHand.Bet.PayoutAmount(PayoutRatio.INSURANCE_BET) <= dealer.ChipAmount &&
                 playerMainHand.InsuranceBet is null;
         }
 
@@ -65,7 +44,7 @@ namespace BlackjackLib
             }
             else
             {
-                dealer.AddChips(playerMainHand.InsuranceBet.Pot.Scoop());
+                dealer.AddChips(playerMainHand.InsuranceBet.Payout(dealer, PayoutRatio.FORFEIT));
             }
         }
     }

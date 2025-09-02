@@ -10,7 +10,7 @@ namespace BlackjackLib
 {
     internal class Card
     { 
-        internal const byte ACE_VALUES_DIFFERENCE = 10;
+        internal const byte DIFFERENCE_BETWEEN_HIGH_AND_LOW_ACE_VALUES = 10;
         internal readonly Rank Rank;
         internal readonly Suit Suit;
 
@@ -44,10 +44,8 @@ namespace BlackjackLib
                         return 10;
                     case Rank.King:
                         return 10;
-                    case Rank.Ace:
-                        return 11;
                     default:
-                        throw new InvalidOperationException($"Unexpected rank in card property \"Card.Value\": {Rank}.");
+                        return 11;
                 }
             }
         }

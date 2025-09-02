@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public enum HandStatus : byte
+    internal enum HandStatus : byte
     {
         Blackjack, 
         Busted,

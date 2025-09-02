@@ -10,15 +10,15 @@ namespace BlackjackLib
 {
     internal static class PromptManager
     {
-        internal const string PLACE_BET_PROMPT = "Place a bet";
-        internal const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_AND_SPLIT_AND_SURRENDER = "Would you like to (d)ouble down, (h)it, (sp)lit, (st)and, or (su)rrender? ";
-        internal const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_AND_SPLIT_NO_SURRENDER = "Would you like to (d)ouble down, (h)it, (sp)lit, or (st)and? ";
-        internal const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_NO_SPLIT_CAN_SURRENDER = "Would you like to (d)ouble down, (h)it, (st)and, or (su)rrender? ";
-        internal const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_NO_SPLIT_NOR_SURRENDER = "Would you like to (d)ouble down, (h)it, or (st)and? ";
-        internal const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_CAN_SPLIT_AND_SURRENDER = "Would you like to (h)it, (sp)lit, (st)and, or (su)rrender? ";
-        internal const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_CAN_SPLIT_NO_SURRENDER = "Would you like to (h)it, (sp)lit, or (st)and? ";
-        internal const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_NOR_SPLIT_CAN_SURRENDER = "Would you like to (h)it, (st)and, or (su)rrender? ";
-        internal const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_NOR_SPLIT_NOR_SURRENDER = "Would you like to (h)it, (sp)lit, or (st)and? ";
+        const string PLACE_BET_PROMPT = "Place a bet";
+        const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_AND_SPLIT_AND_SURRENDER = "Would you like to (d)ouble down, (h)it, (sp)lit, (st)and, or (su)rrender? ";
+        const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_AND_SPLIT_NO_SURRENDER = "Would you like to (d)ouble down, (h)it, (sp)lit, or (st)and? ";
+        const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_NO_SPLIT_CAN_SURRENDER = "Would you like to (d)ouble down, (h)it, (st)and, or (su)rrender? ";
+        const string PLAYER_ACTION_PROMPT_CAN_DOUBLE_DOWN_NO_SPLIT_NOR_SURRENDER = "Would you like to (d)ouble down, (h)it, or (st)and? ";
+        const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_CAN_SPLIT_AND_SURRENDER = "Would you like to (h)it, (sp)lit, (st)and, or (su)rrender? ";
+        const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_CAN_SPLIT_NO_SURRENDER = "Would you like to (h)it, (sp)lit, or (st)and? ";
+        const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_NOR_SPLIT_CAN_SURRENDER = "Would you like to (h)it, (st)and, or (su)rrender? ";
+        const string PLAYER_ACTION_PROMPT_CANT_DOUBLE_DOWN_NOR_SPLIT_NOR_SURRENDER = "Would you like to (h)it, (sp)lit, or (st)and? ";
 
         internal static PlayerInputAbbreviation FormatUserInputPrompt(PlayerHand activePlayerHand)
         {
@@ -67,7 +67,7 @@ namespace BlackjackLib
             do
             {
                 Console.Write(promptString);
-                inputString = Console.ReadLine(); //This will change in the future as I switch to using a GUI application to use the library.
+                inputString = Console.ReadLine(); 
                 validatedInput = ValidateInput(inputString);
 
                 try
@@ -216,14 +216,14 @@ namespace BlackjackLib
             }
         }
 
-        private static string ValidateInput(string inputStr)
+        private static string ValidateInput(string inputString)
         {
-            if (System.String.IsNullOrWhiteSpace(inputStr))
+            if (System.String.IsNullOrWhiteSpace(inputString))
             {
                 return null;
             }
 
-            return inputStr.Trim().ToUpper();
+            return inputString.Trim().ToUpper();
         }
     }
 }

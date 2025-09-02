@@ -45,9 +45,9 @@ namespace BlackjackLib
             BettingRoundLoop(); 
         }
 
-        static void DealerPlay()
+        private static void DealerPlay()
         {
-            Console.WriteLine(MessageManager.DetermineDealerHandStringBrief(game.EntitiesController.Dealer.MainHand as DealerHand));
+            Console.WriteLine(MessageManager.DealerHandStringBrief(game.EntitiesController.Dealer.MainHand as DealerHand));
             
             while (game.EntitiesController.Dealer.MustHit)
             {
@@ -55,7 +55,7 @@ namespace BlackjackLib
             }
         }
 
-        static void PerformShowdowns()
+        private static void PerformShowdowns()
         {
             PlayerHand[] playerHands = game.EntitiesController.Player.HandsInShowdownOrder;
 
@@ -84,7 +84,7 @@ namespace BlackjackLib
             game.ResetAfterBettingRound();
         }
 
-        static void PlayerMainActionStringInputLoop()
+        private static void PlayerMainActionStringInputLoop()
         {
             PlayerInputAbbreviation playerInputAbbreviation; 
 
@@ -104,33 +104,33 @@ namespace BlackjackLib
             }
         }
 
-        static void PrepareForBettingRound()
+        private static void PrepareForBettingRound()
         {
             decimal chipAmount; 
             PlayerHand playerMainHand = game.EntitiesController.ActivePlayerHand;
             PlayerInputAbbreviation playerInputAbbreviation; 
 
-            Console.WriteLine(MessageManager.DetermineChipAmountBriefString(game.EntitiesController.Dealer, game.EntitiesController.Player));
+            Console.WriteLine(MessageManager.ChipAmountBriefString(game.EntitiesController.Dealer, game.EntitiesController.Player));
 
             while (playerMainHand.Bet is null)
             {
                 chipAmount = PromptManager.PromptPlayerForBetInput(game.EntitiesController.Player);
-                game.EntitiesController.ActivePlayerHand.PlaceMainBet(chipAmount, game.EntitiesController.Dealer);
+                game.EntitiesController.PlaceMainBet(chipAmount);
             }
 
-            game.EntitiesController.Dealer.Deal(game.EntitiesController.ActivePlayerHand);
-            Console.WriteLine(MessageManager.DetermineDealBriefString(game.EntitiesController.Dealer.MainHand as DealerHand, game.EntitiesController.ActivePlayerHand)); 
+            game.EntitiesController.Deal();
+            Console.WriteLine(MessageManager.DealBriefString(game.EntitiesController.Dealer.MainHand as DealerHand, game.EntitiesController.ActivePlayerHand)); 
 
-            if (InsuranceBetManager.InsuranceBetPossible(game.EntitiesController.Dealer, game.EntitiesController.Player))
+            if (InsuranceManager.InsuranceBetPossible(game.EntitiesController.Dealer, game.EntitiesController.Player))
             {
-                playerInputAbbreviation = PromptManager.PromptPlayerForYesOrNoInput(MessageManager.DetermineInsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.InsuranceBetChipAmount));
+                playerInputAbbreviation = PromptManager.PromptPlayerForYesOrNoInput(MessageManager.InsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.InsuranceBetChipAmount));
 
                     switch (playerInputAbbreviation)
                     {
                         case PlayerInputAbbreviation.Y:
-                            InsuranceBetManager.PlaceInsuranceBet(game.EntitiesController.Dealer, game.EntitiesController.Player);
-                            InsuranceBetManager.ResolveInsuranceBet(game.EntitiesController.Dealer, game.EntitiesController.Player);
-                            Console.WriteLine(MessageManager.DetermineInsuranceBetResolutionString(game.EntitiesController.Dealer, game.EntitiesController.ActivePlayerHand)); 
+                            game.EntitiesController.PlaceInsuranceBet();
+                            InsuranceManager.ResolveInsuranceBet(game.EntitiesController.Dealer, game.EntitiesController.Player);
+                            Console.WriteLine(MessageManager.InsuranceBetResolutionString(game.EntitiesController.Dealer, game.EntitiesController.ActivePlayerHand)); 
                             break;
                     }
             }

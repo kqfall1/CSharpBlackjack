@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class PlayerHand : Hand
+    internal class PlayerHand : Hand
     {
         internal Bet Bet; 
         
@@ -30,8 +30,9 @@ namespace BlackjackLib
             }
         }
 
-        public readonly HandType HandType;
-        public string HandTypeString
+        internal readonly HandType HandType;
+
+        internal string HandTypeString
         {
             get
             {
@@ -39,7 +40,7 @@ namespace BlackjackLib
             }
         }
 
-        public override bool IsBlackjack
+        internal override bool IsBlackjack
         {
             get
             {
@@ -70,14 +71,6 @@ namespace BlackjackLib
             }
         }
 
-        internal bool IsValid
-        {
-            get
-            {
-                return UpCards.Count > 0; 
-            }
-        }
-
         internal readonly Player Player;
 
         internal PlayerHand(Bet bet, HandType handType, Player player) : base()
@@ -89,6 +82,15 @@ namespace BlackjackLib
 
         internal void DoubleDownOnBet(Dealer dealer)
         {
+            if (!CanDoubleDown)
+            {
+                throw new InsufficientChipsException(Player, Bet.ChipAmount);
+            }
+            else if (Bet.PayoutAmountDoubleDown() > dealer.ChipAmount)
+            {
+                throw new InsufficientChipsException(dealer, Bet.DoubleDownChipAmount);
+            }
+
             Player.RemoveChips(Bet.ChipAmount);
             Bet.DoubleDown();
             dealer.Hit(this);

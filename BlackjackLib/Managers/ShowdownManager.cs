@@ -17,17 +17,17 @@ namespace BlackjackLib
             if (dealer.MainHand.IsBlackjack && playerHand.IsBlackjack)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH));
-                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackPushString(playerHand.Bet.ChipAmount)}";
+                return $"{showdownString} {MessageManager.ShowdownBlackjackPushString(playerHand.Bet.ChipAmount)}";
             }
             else if (dealer.MainHand.IsBlackjack)
             {
-                dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackDealerWinString(playerHand.Bet.ChipAmount)}";
+                dealer.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.FORFEIT));
+                return $"{showdownString} {MessageManager.ShowdownBlackjackDealerWinString(playerHand.Bet.ChipAmount)}";
             }
             else if (playerHand.IsBlackjack)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.BLACKJACK));
-                return $"{showdownString} {MessageManager.DetermineShowdownBlackjackPlayerWinString(playerHand)}";
+                return $"{showdownString} {MessageManager.ShowdownBlackjackPlayerWinString(playerHand)}";
             }
             
             throw new InvalidOperationException(MessageManager.NO_BLACKJACK_FOUND_MESSAGE);
@@ -38,39 +38,39 @@ namespace BlackjackLib
 
             if (playerHand.IsBusted)
             {
-                dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} {MessageManager.DetermineShowdownBustedDealerWinString(playerHand)}";
+                dealer.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.FORFEIT));
+                return $"{showdownString} {MessageManager.ShowdownBustedDealerWinString(playerHand)}";
             }
             else if (dealer.MainHand.IsBusted)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.MAIN_BET));
-                return $"{showdownString} {MessageManager.DetermineShowdownBustedPlayerWinString(dealer, playerHand)}";
+                return $"{showdownString} {MessageManager.ShowdownBustedPlayerWinString(dealer, playerHand)}";
             }
 
             throw new InvalidOperationException(MessageManager.NO_BUSTED_ENTITY_FOUND_MESSAGE);
         }
         internal static string Normal(Dealer dealer, PlayerHand playerHand)
         {
-            string showdownString = MessageManager.DetermineShowdownNormalBriefString(dealer, playerHand);
+            string showdownString = MessageManager.ShowdownNormalBriefString(dealer, playerHand);
 
             if (playerHand.Score > dealer.MainHand.Score)
             {
                 playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.MAIN_BET));
-                return $"{showdownString} {MessageManager.DetermineShowdownNormalPlayerWinString(playerHand)}";
+                return $"{showdownString} {MessageManager.ShowdownNormalPlayerWinString(playerHand)}";
             }
             else if (playerHand.Score < dealer.MainHand.Score)
             {
-                dealer.AddChips(playerHand.Bet.Pot.Scoop());
-                return $"{showdownString} {MessageManager.DetermineShowdownNormalDealerWinString(playerHand)}"; 
+                dealer.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.FORFEIT));
+                return $"{showdownString} {MessageManager.ShowdownNormalDealerWinString(playerHand)}"; 
             }
             
             playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.PUSH));
-            return $"{showdownString} {MessageManager.DetermineShowdownNormalPushString(playerHand)}";
+            return $"{showdownString} {MessageManager.ShowdownNormalPushString(playerHand)}";
         }
         internal static string Surrendered(Dealer dealer, PlayerHand playerHand)
         {
             playerHand.Player.AddChips(playerHand.Bet.Payout(dealer, PayoutRatio.SURRENDER));
-            return MessageManager.DetermineShowdownSurrenderString(playerHand);
+            return MessageManager.ShowdownSurrenderString(playerHand);
         }
     }
 }

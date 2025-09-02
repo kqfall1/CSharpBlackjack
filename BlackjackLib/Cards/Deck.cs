@@ -12,7 +12,6 @@ namespace BlackjackLib
     internal class Deck
     {
         private List<Card> cards;
-
         private const byte CARDS_PER_RANK = 4; 
         private const byte CARDS_PER_SUIT = 13;
         internal const byte FULL_DECK_CARD_COUNT = 52;
@@ -55,7 +54,7 @@ namespace BlackjackLib
                 }
             }
 
-            for (count = (byte)(cards.Count() - 1); count > 0; count--)
+            for (count = (byte)(FULL_DECK_CARD_COUNT - 1); count > 0; count--)
             {
                 randomSwapIndex = (byte)randomGenerator.Next((byte)(count));
                 cardToSwap = cards[count];

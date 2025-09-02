@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class Dealer : BlackjackEntity
+    internal class Dealer : BlackjackEntity
     {
-        private readonly Deck Deck;
+        private readonly Deck deck;
 
         internal bool MustHit
         {
@@ -24,7 +24,7 @@ namespace BlackjackLib
 
         internal Dealer() : base()
         {
-            Deck = new Deck();
+            deck = new Deck();
             MainHand = new DealerHand(this);
         }
         internal void Deal(PlayerHand playerMainHand) 
@@ -41,7 +41,7 @@ namespace BlackjackLib
 
         internal void Hit(Hand hand)
         {
-            hand.UpCards.Add(Deck.DrawCard());
+            hand.UpCards.Add(deck.DrawCard());
 
             if (hand.IsBlackjack)
             {
@@ -64,12 +64,12 @@ namespace BlackjackLib
 
         internal void Shuffle()
         {
-            Deck.Shuffle(); 
+            deck.Shuffle(); 
         }
 
         public override string ToString()
         {
-            return $"{base.ToString()}{Deck}"; 
+            return $"{base.ToString()}{deck}"; 
         }
     }
 }

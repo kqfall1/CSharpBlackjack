@@ -21,11 +21,12 @@ moving forward. Here is my refactoring plan:
 - Add more specific exceptions to the necessary try-catch blocks currently in PlayerController and clean up all of the try-catch blocks. 
 - The Game and PlayerController class are bloated and are doing too much work. I will have to plan how to divide the PlayerController logic into multiple classes, because it is doing much more than driving the player's
  interaction with the game. I originally intended it for it to do just that, but I got carried away, no doubt. 
-- Look through all other classes and validate whether the members belong (should the Game class have Pots if Bet already encapsulates an immutable Pot??) 
+ 
+- Look through all other classes and validate whether the members belong (should the Game class have Pots if Bet already encapsulates an immutable Pot??).
 -Double check all lines of code in the library to verify that they are consistent with each other and proper conventions. 
-- Rename any variables/methods/classes/etc. necessary. 
+- Rename any variables/methods/classes/etc. necessary. Alter all access modifiers to be as strict as reasonably possible. 
 - I may add null checks to some of my library class members. However, I designed the library with the idea that any input must enter through an interface class inside the library that connects the application to the 
-library (currently PlayerController) and that all input will be validated there. 
+library (currently BlackjackEntitiesController) and that all input will be validated there. 
 - Change any readonly properties into readonly fields. My general philosophy is to make any piece of instance data that is supposed to be immutable into a field and any piece of data that is supposed to be mutable into a 
 property. Many developers at Microsoft may take issue with that, but I am sure that I am not alone in following this convention. I am slightly sacrificing the ease of serialization and the scalability of my project 
 for semantic clarity and readability. I believe that is reasonable considering that I don't plan on ever implementing serialization in any way for this project and have compensated for the scalability loss by my 

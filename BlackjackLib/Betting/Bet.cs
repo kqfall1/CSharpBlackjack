@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class Bet
+    internal class Bet
     {
         private decimal chipAmount;
-        public decimal ChipAmount
+        internal decimal ChipAmount
         {
             get
             {
@@ -23,7 +23,7 @@ namespace BlackjackLib
             }
         }
 
-        public decimal DoubleDownChipAmount
+        internal decimal DoubleDownChipAmount
         {
             get
             {
@@ -31,7 +31,7 @@ namespace BlackjackLib
             }
         }
 
-        public decimal InsuranceBetChipAmount
+        internal decimal InsuranceBetChipAmount
         {
             get
             {
@@ -50,16 +50,16 @@ namespace BlackjackLib
 
         internal void DoubleDown()
         {
-            ChipAmount *= 2;
-            Pot.ChipAmount = ChipAmount;
+            ChipAmount = DoubleDownChipAmount;
+            Pot.ChipAmount = DoubleDownChipAmount;
         }
 
-        internal decimal Payout(Dealer dealer, PayoutRatio payoutRatio) //USE THIS WHETHER THE PLAYER WINS OR NOT!!! I MUST CREATE A STATIC READONLY PAYOUTRATIO FIRST
+        internal decimal Payout(Dealer dealer, PayoutRatio payoutRatio) 
         {
             decimal potAmount = Pot.Scoop();
             decimal payout = payoutRatio.PayoutMultiplier * potAmount;
             decimal dealerContribution = payout - potAmount; 
-            dealer.ChipAmount -= dealerContribution;
+            dealer.RemoveChips(dealerContribution);
             return payout; 
         }
 

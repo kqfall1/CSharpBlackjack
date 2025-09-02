@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class PayoutRatio
+    internal class PayoutRatio
     {
+        internal static readonly PayoutRatio FORFEIT = new PayoutRatio(0, 1);
         internal static readonly PayoutRatio INSURANCE_BET = new PayoutRatio(2, 1);
         internal static readonly PayoutRatio MAIN_BET = new PayoutRatio(2, 1);
         internal static readonly PayoutRatio BLACKJACK = new PayoutRatio(3, 2);
@@ -20,22 +21,22 @@ namespace BlackjackLib
         {
             get
             {
-                return (decimal)PayoutValue / (decimal)RiskValue; 
+                return (decimal)Numerator / (decimal)Denominator; 
             }
         }
         
-        internal readonly byte PayoutValue; 
-        internal readonly byte RiskValue;
+        internal readonly byte Numerator; 
+        internal readonly byte Denominator;
 
-        internal PayoutRatio(byte payoutValue, byte riskValue)
+        internal PayoutRatio(byte numerator, byte denominator)
         {
-            this.PayoutValue = payoutValue;
-            this.RiskValue = riskValue;
+            this.Numerator = numerator;
+            this.Denominator = denominator;
         }
 
         public override string ToString()
         {
-            return $"{PayoutValue}:{RiskValue} - pays {(decimal) PayoutValue / (decimal) RiskValue} times the bet amount.";
+            return $"{Numerator}:{Denominator} - pays {(decimal) Numerator / (decimal) Denominator} times the bet amount.";
         }
     }
 }

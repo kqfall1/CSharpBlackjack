@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace BlackjackApp
 {
-    static class BlackjackConsoleApplication
+    static class BlackjackConsoleApplicationEntry
     {
         static void Main(string[] args)
         {

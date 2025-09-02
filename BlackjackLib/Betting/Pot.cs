@@ -11,13 +11,13 @@ namespace BlackjackLib
     internal class Pot
     {  
         private decimal chipAmount; 
-        public decimal ChipAmount
+        internal decimal ChipAmount
         {
             get 
             { 
                 return chipAmount; 
             }
-            internal set
+            set
             {
                 chipAmount = value;
             }

@@ -13,9 +13,7 @@ namespace BlackjackLib
     {
         internal const byte BUST_SCORE_LIMIT = 21;
         internal const byte DEALER_MINIMUM_SCORE_TO_STAND = 17;
-        internal const int INITIAL_CHIP_AMOUNT = 5000;
-
-        internal readonly BlackjackEntitiesController EntitiesController; 
+        internal readonly BlackjackEntitiesController EntitiesController;
 
         internal bool IsActive
         {

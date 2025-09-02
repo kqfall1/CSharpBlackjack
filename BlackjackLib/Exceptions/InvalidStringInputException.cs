@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlackjackLib
 {
-    public class InvalidStringInputException : Exception
+    internal class InvalidStringInputException : Exception
     {
         public InvalidStringInputException(string inputStr) : base($"Input \"{inputStr}\" is invalid.") {}
     }
