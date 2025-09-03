@@ -32,7 +32,7 @@ namespace BlackjackLib
 
         public override string ToString()
         {
-            return $"Chips in pot: {ChipAmount:C}. ";
+            return $"Chips in pot: {ChipAmount:C}.";
         }
     }
 }

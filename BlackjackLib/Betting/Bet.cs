@@ -23,15 +23,15 @@ namespace BlackjackLib
             }
         }
 
-        internal decimal DoubleDownChipAmount
+        internal decimal ChipAmountRequiredToDoubleDown
         {
             get
             {
-                return ChipAmount * 2; 
+                return ChipAmount; 
             }
         }
 
-        internal decimal InsuranceBetChipAmount
+        internal decimal ChipAmountRequiredToPlaceInsuranceBet
         {
             get
             {
@@ -48,10 +48,16 @@ namespace BlackjackLib
             pot.ChipAmount = chipAmount; 
         }
 
+        internal decimal DealerContributionAmount(decimal chipAmount, PayoutRatio payoutRatio)
+        {
+            decimal payout = payoutRatio.PayoutMultiplier * chipAmount;
+            return payout - chipAmount; 
+        }
+
         internal void DoubleDown()
         {
-            ChipAmount = DoubleDownChipAmount;
-            Pot.ChipAmount = DoubleDownChipAmount;
+            ChipAmount *= 2;
+            Pot.ChipAmount *= 2; 
         }
 
         internal decimal Payout(Dealer dealer, PayoutRatio payoutRatio) 
@@ -63,13 +69,9 @@ namespace BlackjackLib
             return payout; 
         }
 
-        public decimal PayoutAmount(PayoutRatio payoutRatio)
+        public decimal PayoutAmount(decimal chipAmount, PayoutRatio payoutRatio)
         {
-            return payoutRatio.PayoutMultiplier * ChipAmount; 
-        }
-        public decimal PayoutAmountDoubleDown()
-        {
-            return PayoutRatio.MAIN_BET.PayoutMultiplier * DoubleDownChipAmount;
+            return payoutRatio.PayoutMultiplier * chipAmount; 
         }
 
         public override string ToString()

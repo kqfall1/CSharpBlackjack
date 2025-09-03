@@ -18,8 +18,8 @@ namespace BlackjackLib
             return playerMainHand.HandType is HandType.Main && 
                 playerMainHand.UpCards.Count == 2 &&
                 dealerHand.UpCards[0].Rank is Rank.Ace &&
-                playerMainHand.Bet.InsuranceBetChipAmount <= player.ChipAmount &&
-                playerMainHand.Bet.PayoutAmount(PayoutRatio.INSURANCE_BET) <= dealer.ChipAmount &&
+                playerMainHand.Bet.ChipAmountRequiredToPlaceInsuranceBet <= player.ChipAmount &&
+                playerMainHand.Bet.DealerContributionAmount(playerMainHand.Bet.ChipAmountRequiredToPlaceInsuranceBet, PayoutRatio.INSURANCE_BET) <= dealer.ChipAmount && 
                 playerMainHand.InsuranceBet is null;
         }
 
@@ -31,7 +31,7 @@ namespace BlackjackLib
         internal static void PlaceInsuranceBet(Dealer dealer, Player player)
         {
             PlayerHand playerMainHand = player.MainHand as PlayerHand; 
-            playerMainHand.InsuranceBet = player.CreateBet(dealer, playerMainHand.Bet.ChipAmount);
+            playerMainHand.InsuranceBet = player.CreateBet(dealer, playerMainHand.Bet.ChipAmountRequiredToPlaceInsuranceBet);
         }
 
         internal static void ResolveInsuranceBet(Dealer dealer, Player player)

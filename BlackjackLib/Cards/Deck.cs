@@ -14,14 +14,14 @@ namespace BlackjackLib
         private List<Card> cards;
         private const byte CARDS_PER_RANK = 4; 
         private const byte CARDS_PER_SUIT = 13;
-        internal const byte FULL_DECK_CARD_COUNT = 52;
+        private const byte FULL_DECK_CARD_COUNT = 52;
         private readonly Random randomGenerator; 
 
         internal Deck()
         {
             cards = new List<Card>();
             randomGenerator = new Random();
-            Shuffle(); 
+            Shuffle();
         }
 
         internal Card DrawCard()
@@ -40,11 +40,11 @@ namespace BlackjackLib
         {
             Card cardToSwap; 
             byte count; 
-            byte randomSwapIndex; 
+            byte randomSwapIndex;
             byte rankIndex;
             byte suitIndex;
 
-            cards.Clear();
+            cards.Clear(); 
 
             for (rankIndex = 0; rankIndex < CARDS_PER_SUIT; rankIndex++)
             {

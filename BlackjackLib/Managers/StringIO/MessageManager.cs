@@ -87,7 +87,7 @@ namespace BlackjackLib
         {
             if (InsuranceManager.InsuranceBetWon(dealer, playerMainHand.InsuranceBet))
             {
-                return $"You win {playerMainHand.InsuranceBet.PayoutAmount(PayoutRatio.INSURANCE_BET):C} on your insurance bet of {playerMainHand.InsuranceBet.ChipAmount:C}";
+                return $"You win {playerMainHand.InsuranceBet.PayoutAmount(playerMainHand.InsuranceBet.ChipAmount, PayoutRatio.INSURANCE_BET):C} on your insurance bet of {playerMainHand.InsuranceBet.ChipAmount:C}";
             }
 
             return $"The dealer does not have a blackjack. You forfeit your bet of {playerMainHand.InsuranceBet.ChipAmount:C}. Play on!";
@@ -102,7 +102,7 @@ namespace BlackjackLib
         }
         internal static string ShowdownBlackjackPlayerWinString(PlayerHand playerHand)
         {
-            return $"you were dealt a blackjack. You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.BLACKJACK):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+            return $"you were dealt a blackjack. You are victorious and receive {playerHand.Bet.PayoutAmount(playerHand.Bet.ChipAmount, PayoutRatio.BLACKJACK):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
         }
         internal static string ShowdownBlackjackPushString(decimal chipAmount)
         {
@@ -114,7 +114,7 @@ namespace BlackjackLib
         }
         internal static string ShowdownBustedPlayerWinString(Dealer dealer, PlayerHand playerHand)
         {
-            return $"the dealer busts with a score of {dealer.MainHand.Score}. You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+            return $"the dealer busts with a score of {dealer.MainHand.Score}. You are victorious and receive {playerHand.Bet.PayoutAmount(playerHand.Bet.ChipAmount, PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
         }
         internal static string ShowdownNormalBriefString(Dealer dealer, PlayerHand playerHand)
         {
@@ -126,15 +126,15 @@ namespace BlackjackLib
         }
         internal static string ShowdownNormalPlayerWinString(PlayerHand playerHand)
         {
-            return $"You are victorious and receive {playerHand.Bet.PayoutAmount(PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+            return $"You are victorious and receive {playerHand.Bet.PayoutAmount(playerHand.Bet.ChipAmount, PayoutRatio.MAIN_BET):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
         }
         internal static string ShowdownNormalPushString(PlayerHand playerHand)
         {
-            return $"You have tied the dealer's score and have your bet of {playerHand.Bet.PayoutAmount(PayoutRatio.PUSH):C} pushed.";
+            return $"You have tied the dealer's score and have your bet of {playerHand.Bet.PayoutAmount(playerHand.Bet.ChipAmount, PayoutRatio.PUSH):C} pushed.";
         }
         internal static string ShowdownSurrenderString(PlayerHand playerHand)
         {
-            return $"Your {playerHand.HandTypeString}: you receive {playerHand.Bet.PayoutAmount(PayoutRatio.SURRENDER):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
+            return $"Your {playerHand.HandTypeString}: you receive {playerHand.Bet.PayoutAmount(playerHand.Bet.ChipAmount, PayoutRatio.SURRENDER):C} from your bet of {playerHand.Bet.ChipAmount:C}.";
         }
         internal static string SplitString(PlayerHand playerMainHand, PlayerHand playerSplitHand)
         {

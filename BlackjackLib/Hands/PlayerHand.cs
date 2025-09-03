@@ -18,7 +18,7 @@ namespace BlackjackLib
             {
                 return UpCards.Count == 2 &&
                        Status is HandStatus.Drawing &&
-                       Bet.DoubleDownChipAmount <= Player.ChipAmount;
+                       Bet.ChipAmountRequiredToDoubleDown <= Player.ChipAmount;
             }
         }
 
@@ -26,7 +26,9 @@ namespace BlackjackLib
         {
             get
             {
-                return HandType is HandType.Main && IsPocketPair; 
+                return HandType is HandType.Main &&
+                       IsPocketPair &&
+                       Bet.ChipAmount <= Player.ChipAmount; 
             }
         }
 
@@ -86,12 +88,12 @@ namespace BlackjackLib
             {
                 throw new InsufficientChipsException(Player, Bet.ChipAmount);
             }
-            else if (Bet.PayoutAmountDoubleDown() > dealer.ChipAmount)
+            else if (Bet.DealerContributionAmount(Bet.ChipAmount * 2, PayoutRatio.MAIN_BET) > dealer.ChipAmount)
             {
-                throw new InsufficientChipsException(dealer, Bet.DoubleDownChipAmount);
+                throw new InsufficientChipsException(dealer, Bet.ChipAmount * 2);
             }
 
-            Player.RemoveChips(Bet.ChipAmount);
+            Player.RemoveChips(Bet.ChipAmountRequiredToDoubleDown);
             Bet.DoubleDown();
             dealer.Hit(this);
         }
@@ -110,6 +112,10 @@ namespace BlackjackLib
             if (!CanSplit)
             {
                 throw new InvalidOperationException($"You cannot split hand:\n\n\t{this.ToString()}\n");
+            }
+            else if (Bet.DealerContributionAmount(Bet.ChipAmount, PayoutRatio.MAIN_BET) > dealer.ChipAmount)
+            {
+                throw new InsufficientChipsException(dealer, Bet.ChipAmount);
             }
 
             splitCard = UpCards[1]; 

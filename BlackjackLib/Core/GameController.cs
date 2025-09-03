@@ -123,7 +123,7 @@ namespace BlackjackLib
 
             if (InsuranceManager.InsuranceBetPossible(game.EntitiesController.Dealer, game.EntitiesController.Player))
             {
-                playerInputAbbreviation = PromptManager.PromptPlayerForYesOrNoInput(MessageManager.InsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.InsuranceBetChipAmount));
+                playerInputAbbreviation = PromptManager.PromptPlayerForYesOrNoInput(MessageManager.InsuranceBetPromptString(game.EntitiesController.ActivePlayerHand.Bet.ChipAmountRequiredToPlaceInsuranceBet));
 
                     switch (playerInputAbbreviation)
                     {

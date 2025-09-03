@@ -1,12 +1,105 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|d:\\backup\\career\\coding\\comp123-002\\quinnkeenan_301504914_blackjack\\blackjacklib\\core\\blackjackentitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|solutionrelative:blackjacklib\\core\\blackjackentitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|d:\\backup\\career\\coding\\comp123-002\\quinnkeenan_301504914_blackjack\\blackjacklib\\core\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|solutionrelative:blackjacklib\\core\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|d:\\backup\\career\\coding\\comp123-002\\quinnkeenan_301504914_blackjack\\blackjacklib\\hands\\playerhand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|solutionrelative:blackjacklib\\hands\\playerhand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|d:\\backup\\career\\coding\\comp123-002\\quinnkeenan_301504914_blackjack\\blackjacklib\\betting\\bet.cs||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|solutionrelative:blackjacklib\\betting\\bet.cs||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|d:\\backup\\career\\coding\\comp123-002\\quinnkeenan_301504914_blackjack\\blackjacklib\\core\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E75F97EA-68FE-4FDD-95B3-710E446761F0}|BlackjackLib\\BlackjackLib.csproj|solutionrelative:blackjacklib\\core\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerHand.cs",
+              "DocumentMoniker": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Hands\\PlayerHand.cs",
+              "RelativeDocumentMoniker": "BlackjackLib\\Hands\\PlayerHand.cs",
+              "ToolTip": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Hands\\PlayerHand.cs",
+              "RelativeToolTip": "BlackjackLib\\Hands\\PlayerHand.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAADwvw4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-03T00:46:23.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Bet.cs",
+              "DocumentMoniker": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Betting\\Bet.cs",
+              "RelativeDocumentMoniker": "BlackjackLib\\Betting\\Bet.cs",
+              "ToolTip": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Betting\\Bet.cs",
+              "RelativeToolTip": "BlackjackLib\\Betting\\Bet.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAIwDsAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-03T00:26:04.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameController.cs",
+              "DocumentMoniker": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\GameController.cs",
+              "RelativeDocumentMoniker": "BlackjackLib\\Core\\GameController.cs",
+              "ToolTip": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\GameController.cs",
+              "RelativeToolTip": "BlackjackLib\\Core\\GameController.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAcwDcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-02T23:47:44.35Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Game.cs",
+              "DocumentMoniker": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\Game.cs",
+              "RelativeDocumentMoniker": "BlackjackLib\\Core\\Game.cs",
+              "ToolTip": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\Game.cs",
+              "RelativeToolTip": "BlackjackLib\\Core\\Game.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-02T23:01:09.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BlackjackEntitiesController.cs",
+              "DocumentMoniker": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\BlackjackEntitiesController.cs",
+              "RelativeDocumentMoniker": "BlackjackLib\\Core\\BlackjackEntitiesController.cs",
+              "ToolTip": "D:\\Backup\\Career\\Coding\\COMP123-002\\QuinnKeenan_301504914_Blackjack\\BlackjackLib\\Core\\BlackjackEntitiesController.cs",
+              "RelativeToolTip": "BlackjackLib\\Core\\BlackjackEntitiesController.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAUwGAAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-03T00:01:59.936Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -18,7 +18,7 @@ namespace BlackjackLib
             {
                 return MainHand.Score < Game.DEALER_MINIMUM_SCORE_TO_STAND ||
                        (MainHand.CardValuesSum == 17 &&
-                       MainHand.AceCount == 1); 
+                       MainHand.ContainsSoftAce); 
             }
         }
 

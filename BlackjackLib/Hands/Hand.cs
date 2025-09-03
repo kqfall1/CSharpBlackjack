@@ -45,6 +45,19 @@ namespace BlackjackLib
             }
         }
 
+        internal bool ContainsSoftAce
+        {
+            get
+            {
+                if (CardValuesSum != Score)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         internal virtual bool IsBlackjack
         {
             get
